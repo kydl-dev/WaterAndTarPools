@@ -54,7 +54,7 @@
     <Compile Include="..\..\DrainTarPit\DrainTarPit-Unity\Assets\DTP_UI\Runtime\Pools\*.cs" Link="UiPools\%(Filename)%(Extension)" />
   </ItemGroup>
   <ItemGroup>
-    <!-- the water bundle (pool water shader + style materials), built from DrainTarPit's Unity project -->
+    <!-- the water bundle (pool water shader + style materials), built in WaterAndTarPools-Unity (menu WTP / Build AssetBundle) -->
     <EmbeddedResource Include="Assets\waterandtarpools" LogicalName="waterandtarpools" Condition="Exists('Assets\waterandtarpools')" />
     <!-- the user's saved water look ("clearly blue") is the built-in look of the Game water style (WaterLook.BuiltInResource) -->
     <EmbeddedResource Include="docs\WaterAndTarPools.WaterLook.txt" LogicalName="WaterAndTarPools.WaterLook.txt" />

@@ -73,3 +73,14 @@ Desktop.ini
 /*-Tests/.nuget/
 /*-Tests/.tmp/
 /*-Tests/.dotnet/
+
+# --- Unity ---
+/*-Unity/Library/
+/*-Unity/Temp/
+/*-Unity/Logs/
+/*-Unity/UserSettings/
+/*-Unity/obj/
+/*-Unity/*.csproj
+/*-Unity/*.sln*
+/*-Unity/Deliverables/
+/_agent/unity_*.log

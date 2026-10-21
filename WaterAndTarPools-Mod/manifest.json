@@ -6,6 +6,6 @@
   "dependencies": [
     "denikson-BepInExPack_Valheim-5.4.2202",
     "ValheimModding-Jotunn-2.30.2",
-    "kydldev-DrainTarPit-1.0.0"
+    "KydlDev-DrainTarPit-1.0.0"
   ]
 }

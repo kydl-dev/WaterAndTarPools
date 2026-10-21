@@ -34,9 +34,8 @@ namespace WaterAndTarPools
         public const string BundleName = "waterandtarpools";
 
         internal static Plugin Instance;
-        static AssetBundle _bundle;
-        /// The water assets (pool water shader + style materials): this mod's own bundle, else DrainTarPit's (older builds had them there).
-        internal static AssetBundle Bundle { get { return _bundle != null ? _bundle : DrainTarPit.Plugin.Bundle; } }
+        /// The water assets (pool water shader DTP/PoolWater + the style materials), built in WaterAndTarPools-Unity (T-071: only this mod ships them).
+        internal static AssetBundle Bundle { get; private set; }
 
         void Awake()
         {
@@ -45,7 +44,7 @@ namespace WaterAndTarPools
             ModLog.Info(ModName + " " + ModVersion + " loaded (dll built " + File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location).ToString("yyyy-MM-dd HH:mm:ss") + ")");
             PoolSettings.Bind(Config);
             OldFiles.Carry();
-            _bundle = LoadBundle();
+            Bundle = LoadBundle();
 
             PoolHooks.PoolsMod = ModName + " " + ModVersion;
             PoolHooks.Deposit = Deposit;
@@ -86,7 +85,7 @@ namespace WaterAndTarPools
             PoolSignPlacement.LogTargets();
         }
 
-        /// This mod's water bundle: embedded resource, else a file next to the DLL. null = DrainTarPit's bundle is used (logged).
+        /// This mod's water bundle: embedded resource, else a file next to the DLL. null = only the Game water style works (logged).
         static AssetBundle LoadBundle()
         {
             var asm = Assembly.GetExecutingAssembly();
@@ -107,7 +106,7 @@ namespace WaterAndTarPools
                 var b = AssetBundle.LoadFromFile(file);
                 if (b != null) { ModLog.Info("Water bundle loaded from " + file); return b; }
             }
-            ModLog.Warn("Water bundle '" + BundleName + "' not found: the water styles come from DrainTarPit's bundle if it still has them");
+            ModLog.Error("Water bundle '" + BundleName + "' not found: only the Game water style works (Tropical / Lake / Ashlands need it)");
             return null;
         }
 
