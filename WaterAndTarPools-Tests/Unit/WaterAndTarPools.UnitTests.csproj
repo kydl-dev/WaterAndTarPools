@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Unit tests: pure logic, no game running. -->
+  <PropertyGroup>
+    <AssemblyName>WaterAndTarPools.UnitTests</AssemblyName>
+    <RootNamespace>WaterAndTarPools.Tests.Unit</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BepInEx"><HintPath>$(ValheimRefs)\BepInEx.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="System.Web.Extensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- the liquid rules: a pure file (no Unity / game types) compiled into the tests as well as into the mod -->
+    <Compile Include="..\..\WaterAndTarPools-Mod\src\Drain\HeightField.cs" Link="Mod\HeightField.cs" />
+    <!-- the pool sign's text style (pure), from DrainTarPit's Unity project -->
+    <Compile Include="..\..\..\DrainTarPit\DrainTarPit-Unity\Assets\DTP_UI\Runtime\Pools\SignStyle.cs" Link="Mod\SignStyle.cs" />
+  </ItemGroup>
+</Project>

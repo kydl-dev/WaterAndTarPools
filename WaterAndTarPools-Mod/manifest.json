@@ -1,0 +1,11 @@
+{
+  "name": "WaterAndTarPools",
+  "version_number": "1.0.0",
+  "website_url": "",
+  "description": "Add-on for DrainTarPit: the liquid you pump fills real pools (dug holes, moats, walled basins), pump water too, pick water styles, name pools with signs and find them in the pool menu (F9).",
+  "dependencies": [
+    "denikson-BepInExPack_Valheim-5.4.2202",
+    "ValheimModding-Jotunn-2.30.2",
+    "kydldev-DrainTarPit-1.0.0"
+  ]
+}
