@@ -60,8 +60,6 @@ namespace WaterAndTarPools
             "Pool sign: brightness of the name's colours.");
         public static readonly Tunable<float> PoolFilmDepth = new("Pools", "PoolFilmDepth", 0.05f,
             "Depth (m) below which liquid counts as a thin film for PoolShedFilm.");
-        public static readonly Tunable<KeyCode> EditorKey = new("Visuals", "EditorKey", KeyCode.F8,
-            "Opens / closes the live water editor.");
 
         public static void Bind(ConfigFile c)
         {

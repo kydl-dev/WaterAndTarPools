@@ -13,6 +13,9 @@ using WaterAndTarPools.Logging;
 using WaterAndTarPools.Signs;
 using WaterAndTarPools.Visuals;
 
+// T-070: the user's KydlTools mod (never published) holds the live water editor, which works on this mod's internals
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("KydlTools")]
+
 namespace WaterAndTarPools
 {
     /// <summary>
@@ -55,7 +58,6 @@ namespace WaterAndTarPools
             PrefabManager.OnVanillaPrefabsAvailable += RegisterSign;    // the pool sign is cloned from the game's sign, so it needs the vanilla prefabs
             // the pools themselves are registered from a ZNetScene.Awake patch (TarPool): this event fires in the main menu, before any ZNetScene exists
             new Harmony(ModGuid).PatchAll(Assembly.GetExecutingAssembly());
-            WaterEditor.Install();                  // live water editor: input blocking patches, made by hand so a missing game method cannot break PatchAll
             ModLog.Info("Hooked into DrainTarPit " + DrainTarPit.Plugin.ModVersion + " (deposits, water colour, pool volume hooks, dtp ptest / meshdump / cleanpools)");
         }
 
@@ -111,7 +113,6 @@ namespace WaterAndTarPools
 
         void Update()
         {
-            WaterEditor.Tick();                      // the live water editor's key opens / closes it
             PoolRegistry.Tick();                     // pool list / world style RPCs, registered once per game session
             PoolStyles.Tick();                       // an admin changed the world water style -> pools redraw
             if (!PoolSettings.On) { PoolSignMenu.Shut("mod switched off"); PoolMenu.Shut("mod switched off"); return; }
@@ -121,9 +122,5 @@ namespace WaterAndTarPools
 
         internal void RunCoroutine(System.Collections.IEnumerator routine) { StartCoroutine(routine); }
 
-        void OnGUI()
-        {
-            WaterEditor.Draw();
-        }
     }
 }
