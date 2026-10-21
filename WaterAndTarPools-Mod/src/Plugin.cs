@@ -45,6 +45,9 @@ namespace WaterAndTarPools
             PoolSettings.Bind(Config);
             OldFiles.Carry();
             Bundle = LoadBundle();
+            var splash = Bundle != null ? Bundle.LoadAsset<AudioClip>("assets/audio/water_splash.ogg") : null;     // T-073: in the bundle, not written to disk
+            if (splash != null) PoolHooks.Clips["water_splash"] = splash;
+            ModLog.Verbose("Water splash sound " + (splash != null ? "handed to DrainTarPit (" + splash.length.ToString("0.00") + " s)" : "not in the water bundle - water pours silently"));
 
             PoolHooks.PoolsMod = ModName + " " + ModVersion;
             PoolHooks.Deposit = Deposit;

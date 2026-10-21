@@ -10,6 +10,9 @@ public static class WTP_BuildAssetBundle
     [MenuItem("WTP/Build AssetBundle")]
     public static void Build()
     {
+        // T-073: the water splash sound is in the bundle too (it used to be embedded in the DLL and written to the temp folder)
+        var splash = AssetImporter.GetAtPath("Assets/audio/water_splash.ogg");
+        if (splash != null && splash.assetBundleName != "waterandtarpools") { splash.assetBundleName = "waterandtarpools"; splash.SaveAndReimport(); }
         string root = System.IO.Path.GetDirectoryName(Application.dataPath);
         string outDir = System.IO.Path.Combine(root, "Deliverables/AssetBundles");
         System.IO.Directory.CreateDirectory(outDir);

@@ -10,6 +10,9 @@
     <DeployDir></DeployDir>
     <PackageId>WaterAndTarPools</PackageId>
     <AssemblyName>WaterAndTarPools</AssemblyName>
+    <DebugType>none</DebugType>
+    <Deterministic>true</Deterministic>
+    <PathMap>$(MSBuildProjectDirectory)=.</PathMap>
     <RootNamespace>WaterAndTarPools</RootNamespace>
     <!-- DrainTarPit's build output (this mod needs it: hard dependency) -->
     <DrainTarPitDir Condition="'$(DrainTarPitDir)' == ''">$(MSBuildThisFileDirectory)..\..\DrainTarPit\DrainTarPit-Mod\build</DrainTarPitDir>
