@@ -11,7 +11,7 @@
   <ItemGroup>
     <!-- the liquid rules: a pure file (no Unity / game types) compiled into the tests as well as into the mod -->
     <Compile Include="..\..\WaterAndTarPools-Mod\src\Drain\HeightField.cs" Link="Mod\HeightField.cs" />
-    <!-- the pool sign's text style (pure), from DrainTarPit's Unity project -->
-    <Compile Include="..\..\..\DrainTarPit\DrainTarPit-Unity\Assets\DTP_UI\Runtime\Pools\SignStyle.cs" Link="Mod\SignStyle.cs" />
+    <!-- the pool sign's text style (pure) -->
+    <Compile Include="..\..\WaterAndTarPools-Mod\src\Ui\SignStyle.cs" Link="Mod\SignStyle.cs" />
   </ItemGroup>
 </Project>
