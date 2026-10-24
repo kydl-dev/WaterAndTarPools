@@ -5,7 +5,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
-using WaterAndTarPools.Logging;
+using Kydl.Common;
 using UnityEngine;
 using static WaterAndTarPools.Debug.PoolTestOut;
 using static WaterAndTarPools.Debug.PoolRunTests;

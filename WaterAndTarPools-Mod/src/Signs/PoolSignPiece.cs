@@ -1,4 +1,4 @@
-using WaterAndTarPools.Logging;
+using Kydl.Common;
 using DrainTarPit.TextLocal;
 using Jotunn.Configs;
 using Jotunn.Entities;

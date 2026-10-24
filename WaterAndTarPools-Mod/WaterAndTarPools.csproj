@@ -13,6 +13,8 @@
     <DebugType>none</DebugType>
     <Deterministic>true</Deterministic>
     <PathMap>$(MSBuildProjectDirectory)=.</PathMap>
+    <!-- CS0436: a referenced mod of the user (InternalsVisibleTo) also compiles the shared internal Kydl.Common.ModLog; this assembly's own copy wins, which is intended -->
+    <NoWarn>$(NoWarn);CS0436</NoWarn>
     <RootNamespace>WaterAndTarPools</RootNamespace>
     <!-- DrainTarPit's build output (this mod needs it: hard dependency) -->
     <DrainTarPitDir Condition="'$(DrainTarPitDir)' == ''">$(MSBuildThisFileDirectory)..\..\DrainTarPit\DrainTarPit-Mod\build</DrainTarPitDir>
@@ -66,4 +68,9 @@
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(MSBuildProjectDirectory)\build" />
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(USERPROFILE)\AppData\Roaming\com.kesomannen.gale\valheim\profiles\test\BepInEx\plugins\WaterAndTarPools" />
   </Target>
+  <ItemGroup>
+    <!-- 2026-10-24: the SHARED log of all the user's mods (E:\Projects\Valheim\Claude\shared\Kydl.Common\ModLog.cs: debug switch, 2.5 s repeat
+         filter, CHECK OFF warnings via ModLog.Check). Replaces the mod's own Logging\ModLog.cs. -->
+    <Compile Include="..\..\Claude\shared\Kydl.Common\ModLog.cs" Link="Kydl\Common\ModLog.cs" />
+  </ItemGroup>
 </Project>

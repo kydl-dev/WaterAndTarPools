@@ -2,7 +2,7 @@ using DrainTarPit;
 using DrainTarPit.Drain;
 using HarmonyLib;
 using UnityEngine;
-using WaterAndTarPools.Logging;
+using Kydl.Common;
 using WaterAndTarPools.Visuals;
 using static DrainTarPit.Drain.TarPits;
 using static WaterAndTarPools.Drain.TarPitDeposit;

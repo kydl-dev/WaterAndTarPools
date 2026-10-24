@@ -9,7 +9,7 @@ using Jotunn.Utils;
 using UnityEngine;
 using WaterAndTarPools.Debug;
 using WaterAndTarPools.Drain;
-using WaterAndTarPools.Logging;
+using Kydl.Common;
 using WaterAndTarPools.Signs;
 using WaterAndTarPools.Visuals;
 
@@ -40,7 +40,7 @@ namespace WaterAndTarPools
         void Awake()
         {
             Instance = this;
-            ModLog.Init(Logger);
+            ModLog.Init(Logger, ModName, () => PoolSettings.DebugLog != null && PoolSettings.DebugLog.Value);
             ModLog.Info(ModName + " " + ModVersion + " loaded (dll built " + File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location).ToString("yyyy-MM-dd HH:mm:ss") + ")");
             PoolSettings.Bind(Config);
             OldFiles.Carry();

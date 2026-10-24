@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using DrainTarPit;
 using DrainTarPit.Drain;
 using UnityEngine;
-using WaterAndTarPools.Logging;
+using Kydl.Common;
 using static DrainTarPit.Drain.TarPits;
 using static WaterAndTarPools.Drain.TarPitStats;
 

@@ -1,6 +1,6 @@
 using System.IO;
 using BepInEx;
-using WaterAndTarPools.Logging;
+using Kydl.Common;
 
 namespace WaterAndTarPools
 {

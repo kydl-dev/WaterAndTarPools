@@ -4,7 +4,7 @@ using DrainTarPit;
 using DrainTarPit.Drain;
 using HarmonyLib;
 using UnityEngine;
-using WaterAndTarPools.Logging;
+using Kydl.Common;
 using static DrainTarPit.Drain.TarPits;
 using static DrainTarPit.Drain.TarPitTracking;
 using static WaterAndTarPools.Drain.TarPitStats;

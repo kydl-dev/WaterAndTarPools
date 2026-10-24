@@ -8,7 +8,7 @@ using DrainTarPit.Ui;
 using WaterAndTarPools.Ui;
 using WaterAndTarPools.Visuals;
 using WaterAndTarPools.Signs;
-using WaterAndTarPools.Logging;
+using Kydl.Common;
 
 namespace WaterAndTarPools.Drain
 {

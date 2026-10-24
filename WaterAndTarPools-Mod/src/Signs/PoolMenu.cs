@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using WaterAndTarPools.Logging;
+using Kydl.Common;
 using DrainTarPit.TextLocal;
 using DrainTarPit.Ui;
 using WaterAndTarPools.Ui;
