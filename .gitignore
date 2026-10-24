@@ -84,3 +84,11 @@ Desktop.ini
 /*-Unity/*.sln*
 /*-Unity/Deliverables/
 /_agent/unity_*.log
+
+# --- GameProbe test sessions: reports, errors, timelines are tracked; big raw files are not ---
+/_testruns/**/LogOutput.log
+/_testruns/**/log-live.log
+/_testruns/**/*.png
+# release-gate output (report + zip): rebuilt by _agent/tools/release-gate.ps1
+/*-Mod/release/*/release-gate.*
+/*-Mod/release/*/_stage/
