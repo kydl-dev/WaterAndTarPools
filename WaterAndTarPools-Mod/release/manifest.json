@@ -1,6 +1,6 @@
 {
   "name": "WaterAndTarPools",
-  "version_number": "1.0.0",
+  "version_number": "1.0.1",
   "website_url": "",
   "description": "Add-on for DrainTarPit: pumped tar and water fill real pools (dug holes, moats, walled basins), pump water too, pick water styles, name pools with signs and find them in the pool menu (F9).",
   "dependencies": [

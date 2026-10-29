@@ -92,3 +92,13 @@ Desktop.ini
 # release-gate output (report + zip): rebuilt by _agent/tools/release-gate.ps1
 /*-Mod/release/*/release-gate.*
 /*-Mod/release/*/_stage/
+
+# --- never public / never tracked (user rules, PROJECT_RULES.md section 19) ---
+/_agent/
+/_testruns/
+.claude/
+CLAUDE.md
+/Claude outputs/
+*.dll
+*.exe
+*.zip

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.1
+
+- Fixed: the water splash sound now comes straight from the mod's own asset bundle. Before, it was unpacked from the DLL into the temp folder and loaded back from there, which some virus scanners flagged. The mod now writes nothing to disk except its config and saved styles.
+
 ## 1.0.0 - Initial release
 
 - Pumped tar and water fill real pools where the stream lands: dug holes, moats and walled basins, held by built walls, saved with the world and pumpable again.
