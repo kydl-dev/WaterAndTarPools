@@ -8,10 +8,7 @@ using static WaterAndTarPools.Debug.PoolObserver;
 using static WaterAndTarPools.Debug.PoolTests;
 using static WaterAndTarPools.Debug.PoolTankTests;
 using DrainTarPit;
-using DrainTarPit.Building;
 using DrainTarPit.Drain;
-using DrainTarPit.TextLocal;
-using DrainTarPit.Ui;
 using WaterAndTarPools.Ui;
 using WaterAndTarPools.Drain;
 using WaterAndTarPools.Visuals;
@@ -84,9 +81,9 @@ namespace WaterAndTarPools.Debug
             if (!PoolShapes.Known(shape)) { res.Summary = label + ": FAILED - unknown shape (" + string.Join(", ", PoolShapes.All) + ")"; yield break; }
             var tank = new Tank { R = 8, Floor = -1f, Top = 0f, Shape = shape };
             var cfg = Plugin.Instance.Config;
-            bool oldSave = cfg.SaveOnConfigSet, oRim = PoolSettings.PoolRimDisappear.Value, oRun = PoolSettings.PoolRunoff.Value;
+            bool oldSave = cfg.SaveOnConfigSet, oRim = ModSettings.PoolRimDisappear.Value, oRun = ModSettings.PoolRunoff.Value;
             cfg.SaveOnConfigSet = false;
-            PoolSettings.PoolRimDisappear.Value = rim; PoolSettings.PoolRunoff.Value = false;
+            ModSettings.PoolRimDisappear.Value = rim; ModSettings.PoolRunoff.Value = false;
             LiquidVolume v = null;
             try
             {
@@ -95,7 +92,7 @@ namespace WaterAndTarPools.Debug
                 v = _spawned;
                 if (v == null) yield break;
                 var o = v.transform.position;
-                float c2 = v.m_scale * v.m_scale, vol = ModSettings.VolumePerStroke.Value, cap = PoolShapes.Capacity(tank, c2), rimY = PoolShapes.ExpectedRim(tank);
+                float c2 = v.m_scale * v.m_scale, vol = DrainTarPit.ModSettings.VolumePerStroke.Value, cap = PoolShapes.Capacity(tank, c2), rimY = PoolShapes.ExpectedRim(tank);
                 Out("=== " + label.ToUpperInvariant() + ": R " + tank.R + ", H " + F2(tank.Top - tank.Floor) + " m, " + strokes + " strokes of " + F2(vol) + " m3, capacity by construction " + F2(cap) +
                     " m3 up to y " + (float.IsNaN(rimY) ? "n/a (no basin)" : F2(o.y + rimY)) + "; PoolRimDisappear=" + rim + " PoolRunoff=False (test); " + TarPoolDiagnostics.DescribeVolume(v));
                 Out(EnvLine(o)); Out(ConfigLine());
@@ -146,7 +143,7 @@ namespace WaterAndTarPools.Debug
             }
             finally
             {
-                PoolSettings.PoolRimDisappear.Value = oRim; PoolSettings.PoolRunoff.Value = oRun; cfg.SaveOnConfigSet = oldSave;
+                ModSettings.PoolRimDisappear.Value = oRim; ModSettings.PoolRunoff.Value = oRun; cfg.SaveOnConfigSet = oldSave;
                 if (v != null) { TarPool.DestroyForTest(v); Synth.Remove(v); }
             }
         }
@@ -158,9 +155,9 @@ namespace WaterAndTarPools.Debug
             var tank = new Tank { R = 10, Floor = -1f, Top = 1f, Shape = "closed", RealWalls = kind == "real" };
             if (kind != "open" && kind != "thick" && kind != "submerged" && kind != "full" && kind != "real") { res.Summary = label + ": FAILED - use open | thick | submerged | full | real"; yield break; }
             var cfg = Plugin.Instance.Config;                                 // shedding / runoff off: the wall pass alone must keep the total (T-16 'walls full' lost
-            bool oldSave = cfg.SaveOnConfigSet, oShed = PoolSettings.PoolShedFilm.Value, oRun = PoolSettings.PoolRunoff.Value;   // 0.30 m3 to border films)
+            bool oldSave = cfg.SaveOnConfigSet, oShed = ModSettings.PoolShedFilm.Value, oRun = ModSettings.PoolRunoff.Value;   // 0.30 m3 to border films)
             cfg.SaveOnConfigSet = false;
-            PoolSettings.PoolShedFilm.Value = false; PoolSettings.PoolRunoff.Value = false;
+            ModSettings.PoolShedFilm.Value = false; ModSettings.PoolRunoff.Value = false;
             LiquidVolume v = null;
             try
             {
@@ -172,7 +169,7 @@ namespace WaterAndTarPools.Debug
                 Out("=== " + label.ToUpperInvariant() + ": closed tank R " + tank.R + ", walls 2 m, 4 strokes injected evenly (about 0.87 m deep), then a synthetic piece is put into the water; " + TarPoolDiagnostics.DescribeVolume(v));
                 Out(EnvLine(v.transform.position)); Out(ConfigLine());
                 TarPitLedger.Of(v).LastDeposit = Time.time;                   // book the wall passes of this pool
-                for (int k = 0; k < 4; k++) Inject(v, tank, ModSettings.VolumePerStroke.Value);
+                for (int k = 0; k < 4; k++) Inject(v, tank, DrainTarPit.ModSettings.VolumePerStroke.Value);
                 yield return new WaitForSeconds(3f);
                 float before = TarPits.TotalVolume(v);
                 var b0 = Copy(PoolDebug.BudgetFor(v));
@@ -212,7 +209,7 @@ namespace WaterAndTarPools.Debug
             }
             finally
             {
-                PoolSettings.PoolShedFilm.Value = oShed; PoolSettings.PoolRunoff.Value = oRun; cfg.SaveOnConfigSet = oldSave;
+                ModSettings.PoolShedFilm.Value = oShed; ModSettings.PoolRunoff.Value = oRun; cfg.SaveOnConfigSet = oldSave;
                 if (v != null) { TarPool.DestroyForTest(v); Synth.Remove(v); }
             }
         }

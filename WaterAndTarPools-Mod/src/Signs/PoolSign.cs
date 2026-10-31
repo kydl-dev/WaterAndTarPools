@@ -1,13 +1,10 @@
 using System.Collections.Generic;
 
 using Kydl.Common;
-using DrainTarPit.TextLocal;
 using TMPro;
 using UnityEngine;
 using DrainTarPit;
-using DrainTarPit.Building;
 using DrainTarPit.Drain;
-using DrainTarPit.Ui;
 using WaterAndTarPools.Ui;
 using WaterAndTarPools.Drain;
 using WaterAndTarPools.Visuals;
@@ -131,9 +128,9 @@ namespace WaterAndTarPools.Signs
 
         void Brighten()
         {
-            float b = PoolSettings.SignBoardBrightness != null ? PoolSettings.SignBoardBrightness.Value : 1f;
+            float b = ModSettings.SignBoardBrightness != null ? ModSettings.SignBoardBrightness.Value : 1f;
             foreach (var x in _board) x.Mat.color = new Color(x.Orig.r * b, x.Orig.g * b, x.Orig.b * b, x.Orig.a);
-            ModLog.Verbose("PoolSign: board x" + b.ToString("0.00") + " (" + _board.Count + " material(s)), text x" + (PoolSettings.SignTextBrightness != null ? PoolSettings.SignTextBrightness.Value.ToString("0.00") : "1"));
+            ModLog.Verbose("PoolSign: board x" + b.ToString("0.00") + " (" + _board.Count + " material(s)), text x" + (ModSettings.SignTextBrightness != null ? ModSettings.SignTextBrightness.Value.ToString("0.00") : "1"));
         }
 
         /// A brightness setting changed: every loaded sign redraws its board and text.
@@ -227,14 +224,14 @@ namespace WaterAndTarPools.Signs
         }
 
         // --- Hoverable / Interactable --------------------------------------------------------------------------------------
-        public string GetHoverName() { return Loc.T("dtp_piece_sign"); }
+        public string GetHoverName() { return Loc.T("wtp_piece_sign"); }
         public float GetHoverOffset() { return 0f; }
 
         public string GetHoverText()
         {
-            string title = string.IsNullOrEmpty(SignName) ? Loc.T("dtp_sign_unnamed") : "\"" + SignName + "\"";
-            string pool = Pool() != null ? Loc.T("dtp_sign_pool_ok") : Loc.T("dtp_sign_pool_none");
-            string text = title + "\n" + pool + "\n[<color=yellow><b>$KEY_Use</b></color>] " + Loc.T("dtp_sign_edit");
+            string title = string.IsNullOrEmpty(SignName) ? Loc.T("wtp_sign_unnamed") : "\"" + SignName + "\"";
+            string pool = Pool() != null ? Loc.T("wtp_sign_pool_ok") : Loc.T("wtp_sign_pool_none");
+            string text = title + "\n" + pool + "\n[<color=yellow><b>$KEY_Use</b></color>] " + Loc.T("wtp_sign_edit");
             return Localization.instance != null ? Localization.instance.Localize(text) : text;    // the game only fills $KEY_Use through Localize
         }
 
@@ -242,7 +239,7 @@ namespace WaterAndTarPools.Signs
         public bool Interact(Humanoid user, bool hold, bool alt)
         {
             int open = 0;
-            if (!PoolSettings.On) { ModLog.Verbose("PoolSign: E ignored, [General] EnableAll is off"); return open == 1; }   // T-068: inert
+            if (!ModSettings.PoolsOn) { ModLog.Verbose("PoolSign: E ignored, [General] EnableAll is off"); return open == 1; }   // T-068: inert
             if (!hold)
             {
                 ModLog.Verbose("PoolSign: E on '" + SignName + "' by " + (user != null ? user.GetHoverName() : "?") + ", pool " + PoolLabel());

@@ -1,13 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Reflection;
 using Kydl.Common;
 using HarmonyLib;
 using UnityEngine;
 using DrainTarPit;
-using DrainTarPit.Building;
 using DrainTarPit.Drain;
-using DrainTarPit.TextLocal;
-using DrainTarPit.Ui;
 using WaterAndTarPools.Ui;
 using WaterAndTarPools.Drain;
 using WaterAndTarPools.Visuals;

@@ -1,0 +1,14 @@
+{
+  "name": "hub-page",
+  "description": "The Pools tab is in the KY hub, the hub opens straight to it and the page builds",
+  "timeout": 60,
+  "steps": [
+    { "do": "hook", "name": "kc.hubOpen", "args": { "mod": "com.kydldev.WaterAndTarPools", "tab": "pools" }, "expect": true },
+    { "do": "wait", "seconds": 1 },
+    { "do": "hook", "name": "kc.hubMods", "contains": "com.kydldev.WaterAndTarPools" },
+    { "do": "hook", "name": "kc.hubTabs", "args": { "mod": "com.kydldev.WaterAndTarPools" }, "contains": "pools" },
+    { "do": "hook", "name": "WaterAndTarPools.poolsPage", "contains": "pools" },
+    { "do": "hook", "name": "kc.hubClose" }
+  ],
+  "asserts": [ { "check": "noErrors", "source": "WaterAndTarPools" } ]
+}

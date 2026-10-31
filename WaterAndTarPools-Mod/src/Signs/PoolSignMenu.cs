@@ -1,11 +1,9 @@
 using System.Collections.Generic;
 using Kydl.Common;
-using DrainTarPit.TextLocal;
-using DrainTarPit.Ui;
+using Kydl.Ui;
 using WaterAndTarPools.Ui;
 using UnityEngine;
 using DrainTarPit;
-using DrainTarPit.Building;
 using DrainTarPit.Drain;
 using WaterAndTarPools.Drain;
 using WaterAndTarPools.Visuals;
@@ -19,12 +17,13 @@ namespace WaterAndTarPools.Signs
     /// </summary>
     internal sealed class PoolSignMenu : ISignMenuHost
     {
-        const string LockName = "PoolSignMenu";
+        const string WindowId = "poolsign";
         const float MaxDistance = 6f;
         static PoolSignMenu _open;
 
         readonly PoolSign _sign;
         SignMenuView _view;
+        KydlCore.KyWindow _window;
 
         PoolSignMenu(PoolSign sign) { _sign = sign; }
 
@@ -43,13 +42,11 @@ namespace WaterAndTarPools.Signs
         {
             if (sign == null) return 0;
             if (_open != null) _open.Close("another sign opened");
-            var root = UiKit.Root;
-            if (root == null) { ModLog.Warn("PoolSignMenu: UI Toolkit is not available, the sign menu cannot open"); return 0; }
             var m = new PoolSignMenu(sign);
             m._view = new SignMenuView(m, sign.SignName, sign.Style);
-            root.Add(m._view.Window);
+            m._window = KydlCore.KyUi.Open(Plugin.ModGuid, WindowId, m._view.Window, () => m.Closed());
+            if (m._window == null) { ModLog.Warn("PoolSignMenu: the window could not be opened (UI not available)"); return 0; }
             _open = m;
-            UiInputLock.Hold(LockName);
             ModLog.Verbose("PoolSignMenu: opened for '" + sign.SignName + "' (pool " + sign.PoolLabel() + ")");
             return 1;
         }
@@ -60,7 +57,6 @@ namespace WaterAndTarPools.Signs
             var m = _open;
             if (m == null) return;
             if (m._sign == null) { m.Close("the sign was removed"); return; }
-            if (ZInput.GetKeyDown(KeyCode.Escape, true)) { m.Close("Escape"); return; }
             var p = Player.m_localPlayer;
             if (p == null || Vector3.Distance(p.transform.position, m._sign.transform.position) > MaxDistance) m.Close("walked away / no player");
         }
@@ -84,12 +80,17 @@ namespace WaterAndTarPools.Signs
         /// Closes without saving: the sign shows its stored look again.
         public void Close(string why)
         {
-            if (_sign != null) _sign.EndPreview();
-            if (_view != null) _view.Window.RemoveFromHierarchy();
-            _view = null;
-            if (_open == this) _open = null;
-            UiInputLock.Release(LockName);
+            if (_window != null) _window.Close(); else Closed();
             ModLog.Verbose("PoolSignMenu: closed (" + why + ")");
+        }
+
+        /// The window is gone (Escape, X, Cancel, saved, walked away): the sign shows its stored look again.
+        void Closed()
+        {
+            if (_sign != null) _sign.EndPreview();
+            _view = null;
+            _window = null;
+            if (_open == this) _open = null;
         }
     }
 }

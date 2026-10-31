@@ -15,6 +15,7 @@ using WaterAndTarPools.Visuals;
 
 // T-070: the user's KydlTools mod (never published) holds the live water editor, which works on this mod's internals
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("KydlTools")]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("WaterAndTarPools.UnitTests")]
 
 namespace WaterAndTarPools
 {
@@ -24,13 +25,14 @@ namespace WaterAndTarPools
     /// </summary>
     [BepInPlugin(ModGuid, ModName, ModVersion)]
     [BepInDependency(Jotunn.Main.ModGuid)]
+    [BepInDependency(KydlCore.Plugin.ModGuid, "0.1.0")]
     [BepInDependency(DrainTarPit.Plugin.ModGuid, BepInDependency.DependencyFlags.HardDependency)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
     public class Plugin : BaseUnityPlugin
     {
         public const string ModGuid = "com.kydldev.WaterAndTarPools";
         public const string ModName = "WaterAndTarPools";
-        public const string ModVersion = "1.0.1";
+        public const string ModVersion = "2.0.0";
         public const string BundleName = "waterandtarpools";
 
         internal static Plugin Instance;
@@ -40,9 +42,10 @@ namespace WaterAndTarPools
         void Awake()
         {
             Instance = this;
-            ModLog.Init(Logger, ModName, () => PoolSettings.DebugLog != null && PoolSettings.DebugLog.Value);
+            ModLog.Init(Logger, ModName, () => ModSettings.DebugLog != null && ModSettings.DebugLog.Value);
             ModLog.Info(ModName + " " + ModVersion + " loaded (dll built " + File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location).ToString("yyyy-MM-dd HH:mm:ss") + ")");
-            PoolSettings.Bind(Config);
+            Loc.Register(WtpText.En);                  // the texts of the pool tab, the sign menu and the sign piece (English only)
+            ModSettings.Bind(Config);
             OldFiles.Carry();
             Bundle = LoadBundle();
             var splash = Bundle != null ? Bundle.LoadAsset<AudioClip>("assets/audio/water_splash.ogg") : null;     // T-073: in the bundle, not written to disk
@@ -53,6 +56,7 @@ namespace WaterAndTarPools
             PoolHooks.Deposit = Deposit;
             PoolHooks.WaterColourFor = WaterTint.ColourFor;
             PoolVolumeHooks.Install();
+            PoolMenu.Register();                       // the Pools tab of the KY hub (F6)
             PoolHooks.Commands["ptest"] = args => PoolTests.Run(args);
             PoolHooks.Commands["meshdump"] = args => DrainTarPit.Debug.DtpCommands.Print(MeshDump.Run(args.Length > 0 && int.TryParse(args[0], out var r) ? r : 6));
             PoolHooks.Commands["cleanpools"] = CleanPools;
@@ -66,8 +70,8 @@ namespace WaterAndTarPools
         /// The pour of a stroke reached the nozzle (DrainTarPit, PoolHooks.Deposit): the liquid goes into a real pool where the stream lands.
         static void Deposit(Vector3 at, Vector3 dir, float volume, PumpLiquid liquid)
         {
-            if (!PoolSettings.On) { ModLog.Verbose("Deposit: " + liquid + " not deposited, [General] EnableAll is off"); return; }
-            bool wanted = liquid == PumpLiquid.Tar ? PoolSettings.DepositTar.Value : liquid == PumpLiquid.Water && PoolSettings.DepositWater.Value;
+            if (!ModSettings.PoolsOn) { ModLog.Verbose("Deposit: " + liquid + " not deposited, [General] EnableAll or [Pools] Enable is off"); return; }
+            bool wanted = liquid == PumpLiquid.Tar ? ModSettings.DepositTar.Value : liquid == PumpLiquid.Water && ModSettings.DepositWater.Value;
             if (!wanted) { ModLog.Verbose("Deposit: " + liquid + " not deposited ([General] Deposit" + liquid + " off), it only pours out visually"); return; }
             TarPool.DepositAtNozzle(at, dir, volume, liquid);
         }
@@ -117,9 +121,8 @@ namespace WaterAndTarPools
         {
             PoolRegistry.Tick();                     // pool list / world style RPCs, registered once per game session
             PoolStyles.Tick();                       // an admin changed the world water style -> pools redraw
-            if (!PoolSettings.On) { PoolSignMenu.Shut("mod switched off"); PoolMenu.Shut("mod switched off"); return; }
+            if (!ModSettings.PoolsOn) { PoolSignMenu.Shut("mod switched off"); return; }
             PoolSignMenu.Tick();                     // Escape / walking away closes the sign menu
-            PoolMenu.Tick();                         // [Visuals] PoolMenuKey (F9) opens / closes the pool menu
         }
 
         internal void RunCoroutine(System.Collections.IEnumerator routine) { StartCoroutine(routine); }

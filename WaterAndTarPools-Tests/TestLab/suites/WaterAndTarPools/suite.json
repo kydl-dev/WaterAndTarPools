@@ -1,0 +1,10 @@
+{
+  "name": "WaterAndTarPools",
+  "description": "WaterAndTarPools: starts clean, its Pools tab is in the KY hub and builds, its own in-game checks pass (KydlCore D-084: every mod ships a suite)",
+  "requireMods": [
+    { "guid": "com.kydldev.WaterAndTarPools" }
+  ],
+  "configOverrides": [],
+  "resetBetweenTests": true,
+  "tests": [ "startup-clean", "hub-page" ]
+}

@@ -7,11 +7,15 @@
   <ItemGroup>
     <Reference Include="BepInEx"><HintPath>$(ValheimRefs)\BepInEx.dll</HintPath><Private>true</Private></Reference>
     <Reference Include="System.Web.Extensions" />
+    <!-- the mod derives from / calls types of these two; copied next to the tests so every type of WaterAndTarPools.dll can be loaded (Stryker's coverage capture lists them; without them it fails and every mutant survives) -->
+    <Reference Include="UnityEngine.CoreModule"><HintPath>$(ValheimRefs)\UnityEngine.CoreModule.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="DrainTarPit"><HintPath>$(MSBuildThisFileDirectory)..\..\..\DrainTarPit\DrainTarPit-Mod\build\DrainTarPit.dll</HintPath><Private>true</Private></Reference>
   </ItemGroup>
   <ItemGroup>
     <!-- the liquid rules: a pure file (no Unity / game types) compiled into the tests as well as into the mod -->
-    <Compile Include="..\..\WaterAndTarPools-Mod\src\Drain\HeightField.cs" Link="Mod\HeightField.cs" />
+    <Compile Include="..\..\WaterAndTarPools-Mod\src\Drain\HeightField.cs" Link="Mod\HeightField.cs" Condition="'$(KydlQuality)' != 'true'" />
     <!-- the pool sign's text style (pure) -->
-    <Compile Include="..\..\WaterAndTarPools-Mod\src\Ui\SignStyle.cs" Link="Mod\SignStyle.cs" />
+    <Compile Include="..\..\WaterAndTarPools-Mod\src\Ui\SignStyle.cs" Link="Mod\SignStyle.cs" Condition="'$(KydlQuality)' != 'true'" />
+    <Compile Include="..\..\WaterAndTarPools-Mod\src\Drain\RunoffMath.cs" Link="Mod\RunoffMath.cs" Condition="'$(KydlQuality)' != 'true'" />
   </ItemGroup>
 </Project>

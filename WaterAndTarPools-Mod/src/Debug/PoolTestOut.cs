@@ -8,10 +8,7 @@ using System.Text;
 using Kydl.Common;
 using UnityEngine;
 using DrainTarPit;
-using DrainTarPit.Building;
 using DrainTarPit.Drain;
-using DrainTarPit.TextLocal;
-using DrainTarPit.Ui;
 using WaterAndTarPools.Ui;
 using WaterAndTarPools.Drain;
 using WaterAndTarPools.Visuals;
@@ -29,7 +26,7 @@ namespace WaterAndTarPools.Debug
         // --- output ------------------------------------------------------------------------------------------------------
         internal static string OutDir()
         {
-            var d = ModSettings.TestOutDir.Value;
+            var d = DrainTarPit.ModSettings.TestOutDir.Value;
             try
             {
                 if (!string.IsNullOrEmpty(d)) { Directory.CreateDirectory(d); return d; }
@@ -57,10 +54,10 @@ namespace WaterAndTarPools.Debug
 
         internal static string ConfigLine()
         {
-            return "cfg: WaterFlow=" + F2(PoolSettings.WaterFlow.Value) + " PitFlowBoost=" + F2(ModSettings.PitFlowBoost.Value) + "/" + F2(ModSettings.PitFlowBoostSeconds.Value) + "s" +
-                   " PoolWalls=" + PoolSettings.PoolWalls.Value + " PoolOverflow=" + PoolSettings.PoolOverflow.Value + " PoolRimDisappear=" + PoolSettings.PoolRimDisappear.Value + " PoolShedFilm=" + PoolSettings.PoolShedFilm.Value +
-                   " PoolFilmDepth=" + F2(PoolSettings.PoolFilmDepth.Value) + " PoolFilmEvaporates=" + PoolSettings.PoolFilmEvaporates.Value + " PoolRunoff=" + PoolSettings.PoolRunoff.Value +
-                   " VolumePerStroke=" + F2(ModSettings.VolumePerStroke.Value) + " cell=" + F2(PoolSettings.LiquidCellSize.Value) + " size=" + F2(PoolSettings.WaterPoolSize.Value);
+            return "cfg: WaterFlow=" + F2(ModSettings.WaterFlow.Value) + " PitFlowBoost=" + F2(DrainTarPit.ModSettings.PitFlowBoost.Value) + "/" + F2(DrainTarPit.ModSettings.PitFlowBoostSeconds.Value) + "s" +
+                   " PoolWalls=" + ModSettings.PoolWalls.Value + " PoolOverflow=" + ModSettings.PoolOverflow.Value + " PoolRimDisappear=" + ModSettings.PoolRimDisappear.Value + " PoolShedFilm=" + ModSettings.PoolShedFilm.Value +
+                   " PoolFilmDepth=" + F2(ModSettings.PoolFilmDepth.Value) + " PoolFilmEvaporates=" + ModSettings.PoolFilmEvaporates.Value + " PoolRunoff=" + ModSettings.PoolRunoff.Value +
+                   " VolumePerStroke=" + F2(DrainTarPit.ModSettings.VolumePerStroke.Value) + " cell=" + F2(ModSettings.LiquidCellSize.Value) + " size=" + F2(ModSettings.WaterPoolSize.Value);
         }
 
         internal static string EnvLine(Vector3 at)

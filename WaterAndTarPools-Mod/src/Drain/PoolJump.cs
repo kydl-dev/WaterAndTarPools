@@ -3,10 +3,7 @@ using Kydl.Common;
 using HarmonyLib;
 using UnityEngine;
 using DrainTarPit;
-using DrainTarPit.Building;
 using DrainTarPit.Drain;
-using DrainTarPit.TextLocal;
-using DrainTarPit.Ui;
 using WaterAndTarPools.Ui;
 using WaterAndTarPools.Visuals;
 using WaterAndTarPools.Signs;
@@ -37,7 +34,7 @@ namespace WaterAndTarPools.Drain
         /// A jump press of the local player. Returns 1 when it started a lift.
         internal static int Pressed(Player p)
         {
-            if (PoolSettings.PoolJumpBoost == null || !PoolSettings.PoolJumpBoost.Value || !PoolSettings.On || p == null || p != Player.m_localPlayer || p.IsDead()) return 0;
+            if (ModSettings.PoolJumpBoost == null || !ModSettings.PoolJumpBoost.Value || !ModSettings.PoolsOn || p == null || p != Player.m_localPlayer || p.IsDead()) return 0;
             Vector3 pos = p.transform.position;
             LiquidVolume v; float depth, surface;
             if (!TarPits.TrySample(pos, out v, out depth, out surface, LiquidType.All) || !TarPits.IsPumpPool(v) || depth < MinDepth || surface < pos.y + 0.2f)
@@ -48,11 +45,11 @@ namespace WaterAndTarPools.Drain
             float now = Time.time;
             Presses.Add(now);
             Presses.RemoveAll(t => now - t > PressWindow);
-            int need = PoolSettings.PoolJumpPresses.Value;
+            int need = ModSettings.PoolJumpPresses.Value;
             ModLog.Verbose("PoolJump: jump " + Presses.Count + " of " + need + " at the edge of " + v.name + " (" + TarPits.LiquidOf(v) + ", " + depth.ToString("0.0") + " m deep, " + dry + " dry direction(s))");
             if (Presses.Count < need) return 0;
             Presses.Clear();
-            _targetY = pos.y + PoolSettings.PoolJumpHeight.Value;
+            _targetY = pos.y + ModSettings.PoolJumpHeight.Value;
             _edgeDir = dir;
             _liftEnd = now + MaxLift;
             ModLog.Info("PoolJump: lift out of " + v.name + " from y " + pos.y.ToString("0.0") + " to " + _targetY.ToString("0.0") + ", towards " + dir.ToString("0.0"));

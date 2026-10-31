@@ -11,10 +11,7 @@ using static WaterAndTarPools.Debug.PoolTestOut;
 using static WaterAndTarPools.Debug.PoolSnapshot;
 using static WaterAndTarPools.Debug.PoolTests;
 using DrainTarPit;
-using DrainTarPit.Building;
 using DrainTarPit.Drain;
-using DrainTarPit.TextLocal;
-using DrainTarPit.Ui;
 using WaterAndTarPools.Ui;
 using WaterAndTarPools.Drain;
 using WaterAndTarPools.Visuals;
@@ -68,7 +65,7 @@ namespace WaterAndTarPools.Debug
             using (PoolDebug.Lock(v)) hb = HeightField.FindBasin(PoolDebug.DepthList(v), PoolDebug.HeightList(v), w, seed, float.NegativeInfinity);
             Say("RIM (deposit rule): " + (hb.Enclosed ? "ENCLOSED pool" : "NOT a pool (a dent / slope: liquid just runs downhill)") + ", floor y " + F2(o.y + hb.Floor) + ", rim y " +
                 (float.IsInfinity(hb.Rim) ? "closed" : F2(o.y + hb.Rim)) + " (" + (float.IsInfinity(hb.Rim) ? "-" : F2(hb.Depth)) + " m), " + hb.Cells + " cells inside = " + F2(hb.Cells * v.m_scale * v.m_scale) +
-                " m2; lowest rim point " + P(hb.RimCell) + "; [Drain] PoolRimDisappear=" + PoolSettings.PoolRimDisappear.Value);
+                " m2; lowest rim point " + P(hb.RimCell) + "; [Drain] PoolRimDisappear=" + ModSettings.PoolRimDisappear.Value);
         }
 
         // --- fields: what the game's LiquidVolume is made of -------------------------------------------------------------------------

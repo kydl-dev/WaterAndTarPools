@@ -12,10 +12,7 @@ using static WaterAndTarPools.Debug.PoolSnapshot;
 using static WaterAndTarPools.Debug.PoolObserver;
 using static WaterAndTarPools.Debug.PoolTests;
 using DrainTarPit;
-using DrainTarPit.Building;
 using DrainTarPit.Drain;
-using DrainTarPit.TextLocal;
-using DrainTarPit.Ui;
 using WaterAndTarPools.Ui;
 using WaterAndTarPools.Drain;
 using WaterAndTarPools.Visuals;
@@ -80,32 +77,32 @@ namespace WaterAndTarPools.Debug
             var results = new List<string>();
             var cfg = Plugin.Instance.Config;
             bool oldSave = cfg.SaveOnConfigSet;
-            float oShed = PoolSettings.PoolShedFilm.Value ? 1f : 0f, oBoost = ModSettings.PitFlowBoost.Value, oFlow = PoolSettings.WaterFlow.Value;
-            bool oOver = PoolSettings.PoolOverflow.Value, oRun = PoolSettings.PoolRunoff.Value;
+            float oShed = ModSettings.PoolShedFilm.Value ? 1f : 0f, oBoost = DrainTarPit.ModSettings.PitFlowBoost.Value, oFlow = ModSettings.WaterFlow.Value;
+            bool oOver = ModSettings.PoolOverflow.Value, oRun = ModSettings.PoolRunoff.Value;
             cfg.SaveOnConfigSet = false;
             try
             {
                 foreach (var vr in variants)
                 {
                     if (Cancel) break;
-                    if (vr.Shed.HasValue) PoolSettings.PoolShedFilm.Value = vr.Shed.Value;
-                    if (vr.Boost.HasValue) ModSettings.PitFlowBoost.Value = vr.Boost.Value;
-                    if (vr.Flow.HasValue) PoolSettings.WaterFlow.Value = vr.Flow.Value;
-                    if (vr.Overflow.HasValue) PoolSettings.PoolOverflow.Value = vr.Overflow.Value;
-                    if (vr.Runoff.HasValue) PoolSettings.PoolRunoff.Value = vr.Runoff.Value;
+                    if (vr.Shed.HasValue) ModSettings.PoolShedFilm.Value = vr.Shed.Value;
+                    if (vr.Boost.HasValue) DrainTarPit.ModSettings.PitFlowBoost.Value = vr.Boost.Value;
+                    if (vr.Flow.HasValue) ModSettings.WaterFlow.Value = vr.Flow.Value;
+                    if (vr.Overflow.HasValue) ModSettings.PoolOverflow.Value = vr.Overflow.Value;
+                    if (vr.Runoff.HasValue) ModSettings.PoolRunoff.Value = vr.Runoff.Value;
                     var res = new Result();
                     var run = TankRun(vr.Name, 10, 6f, 8, vr.Inject, res);
                     while (run.MoveNext()) yield return run.Current;
                     results.Add(res.Summary);
-                    PoolSettings.PoolShedFilm.Value = oShed > 0.5f; ModSettings.PitFlowBoost.Value = oBoost; PoolSettings.WaterFlow.Value = oFlow;
-                    PoolSettings.PoolOverflow.Value = oOver; PoolSettings.PoolRunoff.Value = oRun;
+                    ModSettings.PoolShedFilm.Value = oShed > 0.5f; DrainTarPit.ModSettings.PitFlowBoost.Value = oBoost; ModSettings.WaterFlow.Value = oFlow;
+                    ModSettings.PoolOverflow.Value = oOver; ModSettings.PoolRunoff.Value = oRun;
                     yield return new WaitForSeconds(1f);
                 }
             }
             finally
             {
-                PoolSettings.PoolShedFilm.Value = oShed > 0.5f; ModSettings.PitFlowBoost.Value = oBoost; PoolSettings.WaterFlow.Value = oFlow;
-                PoolSettings.PoolOverflow.Value = oOver; PoolSettings.PoolRunoff.Value = oRun;
+                ModSettings.PoolShedFilm.Value = oShed > 0.5f; DrainTarPit.ModSettings.PitFlowBoost.Value = oBoost; ModSettings.WaterFlow.Value = oFlow;
+                ModSettings.PoolOverflow.Value = oOver; ModSettings.PoolRunoff.Value = oRun;
                 cfg.SaveOnConfigSet = oldSave;
             }
             Out("=== MATRIX RESULTS (kept = pool volume right after the last stroke / poured; final = after " + F2(HoldAfterPour) + " s more)");
@@ -132,7 +129,7 @@ namespace WaterAndTarPools.Debug
             var v = TarPool.SpawnForTest(land);
             if (v == null) { res.Summary = label + ": FAILED - no pool prefab (see the log)"; yield break; }
             Synth[v] = tank;
-            Out("=== TANK " + label + ": R " + radius + " cells (" + F2((2 * radius + 1) * v.m_scale) + " m square), walls " + F2(tank.Top - tank.Floor) + " m high, " + strokes + " strokes of " + F2(ModSettings.VolumePerStroke.Value) +
+            Out("=== TANK " + label + ": R " + radius + " cells (" + F2((2 * radius + 1) * v.m_scale) + " m square), walls " + F2(tank.Top - tank.Floor) + " m high, " + strokes + " strokes of " + F2(DrainTarPit.ModSettings.VolumePerStroke.Value) +
                 " m3, mode " + (inject ? "inject (even spread, no FloodPass)" : "flood (the real FloodPass)") + "; synthetic tank observer=" + TarPoolDiagnostics.DescribeVolume(v));
             Out(EnvLine(land)); Out(ConfigLine());
             float t0 = Time.time;
@@ -158,7 +155,7 @@ namespace WaterAndTarPools.Debug
             var o = v.transform.position;
             var centre = new Vector3(o.x, o.y + tank.Floor, o.z);
             int cellsIn = (2 * radius + 1) * (2 * radius + 1);
-            float c2 = v.m_scale * v.m_scale, areaIn = cellsIn * c2, vol = ModSettings.VolumePerStroke.Value;
+            float c2 = v.m_scale * v.m_scale, areaIn = cellsIn * c2, vol = DrainTarPit.ModSettings.VolumePerStroke.Value;
             var r = new Obs { Label = "T", V = v, Tank = tank, T0 = Time.time };
             Sample(r);
             float next = Time.time; int done = 0;

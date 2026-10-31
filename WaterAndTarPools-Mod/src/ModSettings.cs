@@ -13,7 +13,7 @@ namespace WaterAndTarPools
     /// can change them for testing). The values DrainTarPit itself needs for water (AllowWater, MinWaterDepth, the splash, the water slug) are
     /// DrainTarPit Tunables and are set from here (Sync), so DrainTarPit works the same with or without this mod.
     /// </summary>
-    internal static class PoolSettings
+    internal static class ModSettings
     {
         // [General]
         public static ConfigEntry<bool> EnableAll;
@@ -22,10 +22,12 @@ namespace WaterAndTarPools
         // [DebugLog]
         public static ConfigEntry<bool> DebugLog;
         // [Effects]
+        public static ConfigEntry<bool> EffectsEnable;
         public static ConfigEntry<float> EffectsVolume;
         public static ConfigEntry<bool> WaterSplashSound;
         public static ConfigEntry<bool> WaterSlugFlow;
         // [Pools]
+        public static ConfigEntry<bool> PoolsEnable;
         public static ConfigEntry<float> MinWaterDepth;
         public static ConfigEntry<bool> PoolWalls;
         public static ConfigEntry<bool> PoolOverflow;
@@ -41,24 +43,27 @@ namespace WaterAndTarPools
         public static ConfigEntry<float> WaterFlow;
         public static ConfigEntry<float> WaterPoolSize;
         // [Visuals]
+        public static ConfigEntry<bool> VisualsEnable;
         public static ConfigEntry<float> WaterDepthLook;
-        public static ConfigEntry<KeyCode> PoolMenuKey;
 
         /// Is the mod on? Both this mod's [General] EnableAll and DrainTarPit's (pools need the pump).
-        public static bool On { get { return (EnableAll == null || EnableAll.Value) && ModSettings.On; } }
+        public static bool On { get { return (EnableAll == null || EnableAll.Value) && DrainTarPit.ModSettings.On; } }
+
+        /// Are the pools on? The mod is on and [Pools] Enable is on (pool deposits, the pool sign menu, fish that stay in, the jump boost).
+        public static bool PoolsOn { get { return On && (PoolsEnable == null || PoolsEnable.Value); } }
 
         // --- fixed values (Tunables) -------------------------------------------------------------------------------------------------
-        public static readonly Tunable<WaterStyleOption> WaterStyle = new("Visuals", "WaterStyle", WaterStyleOption.Game,
+        public static readonly Kydl.Common.Tunable<WaterStyleOption> WaterStyle = new("Visuals", "WaterStyle", WaterStyleOption.Game,
             "Water style of pools when no admin world style and no personal style is set.");
-        public static readonly Tunable<bool> PoolMeshFix = new("Visuals", "PoolMeshFix", true,
+        public static readonly Kydl.Common.Tunable<bool> PoolMeshFix = new("Visuals", "PoolMeshFix", true,
             "Dry grid points near the water are put at the water level (no water sheet hanging on the walls).");
-        public static readonly Tunable<int> PoolMeshReach = new("Visuals", "PoolMeshReach", 6,
+        public static readonly Kydl.Common.Tunable<int> PoolMeshReach = new("Visuals", "PoolMeshReach", 6,
             "PoolMeshFix: how many grid cells away from a wet point a dry point is still put at the water level.");
-        public static readonly Tunable<float> SignBoardBrightness = new("Visuals", "SignBoardBrightness", 1.5f,
+        public static readonly Kydl.Common.Tunable<float> SignBoardBrightness = new("Visuals", "SignBoardBrightness", 1.5f,
             "Pool sign: brightness of the wooden board.");
-        public static readonly Tunable<float> SignTextBrightness = new("Visuals", "SignTextBrightness", 1.2f,
+        public static readonly Kydl.Common.Tunable<float> SignTextBrightness = new("Visuals", "SignTextBrightness", 1.2f,
             "Pool sign: brightness of the name's colours.");
-        public static readonly Tunable<float> PoolFilmDepth = new("Pools", "PoolFilmDepth", 0.05f,
+        public static readonly Kydl.Common.Tunable<float> PoolFilmDepth = new("Pools", "PoolFilmDepth", 0.05f,
             "Depth (m) below which liquid counts as a thin film for PoolShedFilm.");
 
         public static void Bind(ConfigFile c)
@@ -72,6 +77,8 @@ namespace WaterAndTarPools
             DebugLog = c.Bind("DebugLog", "Enable", false,
                 "Writes detailed lines about everything this mod does to the BepInEx log (for bug reports). Leave off while playing normally.");
 
+            EffectsEnable = c.Bind("Effects", "Enable", true,
+                "Sounds and moving water effects of this mod (the water splash, the water slug in the hoses). Off = water pours silently and no slug is shown.");
             EffectsVolume = c.Bind("Effects", "EffectsVolume", 0.6f,
                 new ConfigDescription("Volume of the water splash (0 = silent). The pump sounds have their own volume in DrainTarPit.", new AcceptableValueRange<float>(0f, 1f)));
             WaterSplashSound = c.Bind("Effects", "WaterSplashSound", true,
@@ -79,6 +86,8 @@ namespace WaterAndTarPools
             WaterSlugFlow = c.Bind("Effects", "WaterSlugFlow", true,
                 "Show a slug of water travelling through see-through hoses on every pump stroke (its speed is DrainTarPit's LiquidFlowSpeed).");
 
+            PoolsEnable = c.Bind("Pools", "Enable", true,
+                "The pools: pumped liquid is poured into real pools, the pool sign menu, fish that stay in a water pool, the jump out of a pool. Off = none of these; pools already in the world stay as they are.");
             MinWaterDepth = c.Bind("Pools", "MinWaterDepth", 0.3f,
                 new ConfigDescription("Minimum water depth (m) at the strainer tip for it to count as 'in water'.", new AcceptableValueRange<float>(0.05f, 3f)));
             PoolWalls = c.Bind("Pools", "PoolWalls", true,
@@ -110,14 +119,16 @@ namespace WaterAndTarPools
             WaterFlow = c.Bind("Pools", "WaterFlow", 4f,
                 new ConfigDescription("How freely water runs compared with tar: 1 = as thick as tar, 4 = about twice as fast, 16 = about four times.", new AcceptableValueRange<float>(1f, 64f)));
 
+            VisualsEnable = c.Bind("Visuals", "Enable", true,
+                "How pool water looks: uses the WaterDepthLook below. Off = pool water uses the built-in default look.");
             WaterDepthLook = c.Bind("Visuals", "WaterDepthLook", 0.15f,
                 new ConfigDescription("Game water style only: how deep the water looks (0 = shallow, calm and clear like the shore, 1 = open sea). Applies live.", new AcceptableValueRange<float>(0f, 1f)));
-            PoolMenuKey = c.Bind("Visuals", "PoolMenuKey", KeyCode.F9,
-                "Opens / closes the pool menu: the world water style (server admins), and every pool with a named pool sign (position, closest portal) with your own water style for it (only on your screen). None = no menu.");
-
             Sync();
             EnableAll.SettingChanged += (s, e) => { Sync(); ModLog.Info("Config: EnableAll = " + EnableAll.Value); };
             MinWaterDepth.SettingChanged += (s, e) => Sync();
+            EffectsEnable.SettingChanged += (s, e) => Sync();
+            PoolsEnable.SettingChanged += (s, e) => { if (!PoolsOn) Signs.PoolSignMenu.Shut("pools switched off"); };
+            VisualsEnable.SettingChanged += (s, e) => PoolWater.RequestRefresh();
             WaterSplashSound.SettingChanged += (s, e) => Sync();
             EffectsVolume.SettingChanged += (s, e) => Sync();
             WaterSlugFlow.SettingChanged += (s, e) => Sync();
@@ -129,20 +140,20 @@ namespace WaterAndTarPools
             SignTextBrightness.SettingChanged += (s, e) => ModLog.Verbose("Config: SignTextBrightness = " + SignTextBrightness.Value + ", " + Signs.PoolSign.BrightnessChanged() + " sign(s) redrawn");
             WaterFlow.SettingChanged += (s, e) => TarPool.ApplyWaterFlow();       // live: existing water pools + the prefabs for new ones
             PoolMesh.Refresh();
-            ModLog.Verbose("PoolSettings: bound (EnableAll " + EnableAll.Value + ", debug log " + DebugLog.Value + ")");
+            ModLog.Verbose("ModSettings: bound (EnableAll " + EnableAll.Value + ", debug log " + DebugLog.Value + ")");
         }
 
         /// Hands the water values DrainTarPit reads to its Tunables. Returns 1 when water pumping is allowed now.
         internal static int Sync()
         {
-            ModSettings.AllowWater.Value = On;
-            ModSettings.MinWaterDepth.Value = MinWaterDepth.Value;
-            ModSettings.WaterSplashSound.Value = WaterSplashSound.Value;
-            ModSettings.WaterSplashVolume.Value = EffectsVolume.Value;
-            ModSettings.WaterSlugFlow.Value = WaterSlugFlow.Value;
-            ModLog.Verbose("PoolSettings: DrainTarPit water values set (water pumping " + (On ? "on" : "off") + ", min depth " + MinWaterDepth.Value.ToString("0.00") +
+            DrainTarPit.ModSettings.AllowWater.Value = On;
+            DrainTarPit.ModSettings.MinWaterDepth.Value = MinWaterDepth.Value;
+            DrainTarPit.ModSettings.WaterSplashSound.Value = EffectsEnable.Value && WaterSplashSound.Value;
+            DrainTarPit.ModSettings.WaterSplashVolume.Value = EffectsVolume.Value;
+            DrainTarPit.ModSettings.WaterSlugFlow.Value = EffectsEnable.Value && WaterSlugFlow.Value;
+            ModLog.Verbose("ModSettings: DrainTarPit water values set (water pumping " + (On ? "on" : "off") + ", min depth " + MinWaterDepth.Value.ToString("0.00") +
                 " m, splash " + WaterSplashSound.Value + " at " + EffectsVolume.Value.ToString("0.00") + ", water slug " + WaterSlugFlow.Value + ")");
-            return ModSettings.AllowWater.Value ? 1 : 0;
+            return DrainTarPit.ModSettings.AllowWater.Value ? 1 : 0;
         }
     }
 }

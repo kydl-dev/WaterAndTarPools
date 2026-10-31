@@ -1,12 +1,9 @@
 using System.Reflection;
 using Kydl.Common;
-using DrainTarPit.TextLocal;
 using HarmonyLib;
 using UnityEngine;
 using DrainTarPit;
-using DrainTarPit.Building;
 using DrainTarPit.Drain;
-using DrainTarPit.Ui;
 using WaterAndTarPools.Ui;
 using WaterAndTarPools.Drain;
 using WaterAndTarPools.Visuals;
@@ -63,7 +60,7 @@ namespace WaterAndTarPools.Signs
         internal static int Tell(Player p, Piece piece)
         {
             if (_blocked == 0 || p == null || p != Player.m_localPlayer || piece == null || piece.GetComponent<PoolSign>() == null) return 0;
-            p.Message(MessageHud.MessageType.TopLeft, _blocked == 2 ? Loc.T("dtp_sign_pool_taken") : Loc.T("dtp_sign_need_pool", PoolFinder.Reach.ToString("0")));
+            p.Message(MessageHud.MessageType.TopLeft, _blocked == 2 ? Loc.T("wtp_sign_pool_taken") : Loc.T("wtp_sign_need_pool", PoolFinder.Reach.ToString("0")));
             ModLog.Verbose("PoolSignPlacement: pool sign not placed at " + _lastAt.ToString("0.0") + (_blocked == 2 ? ", the pool has a sign already" : ", no pool within " + PoolFinder.Reach + " m"));
             return 1;
         }

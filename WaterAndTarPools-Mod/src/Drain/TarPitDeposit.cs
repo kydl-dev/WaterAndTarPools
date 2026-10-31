@@ -6,10 +6,7 @@ using static WaterAndTarPools.Drain.TarPitFlood;
 using static WaterAndTarPools.Drain.TarPitStats;
 using static DrainTarPit.Drain.TarPitFlow;
 using DrainTarPit;
-using DrainTarPit.Building;
 using DrainTarPit.Drain;
-using DrainTarPit.TextLocal;
-using DrainTarPit.Ui;
 using WaterAndTarPools.Ui;
 using WaterAndTarPools.Visuals;
 using WaterAndTarPools.Signs;
@@ -80,13 +77,13 @@ namespace WaterAndTarPools.Drain
             if (hop < 0 || hop > TarPool.MaxRunoffHops + 1) { ModLog.Verbose(who + "hop out of range"); return; }
             if (float.IsNaN(at.x) || float.IsNaN(at.y) || float.IsNaN(at.z)) { ModLog.Verbose(who + "landing point is NaN"); return; }
             if (float.IsNaN(origin.x) || float.IsNaN(origin.z) || hop == 0) origin = at;
-            volume = Mathf.Min(volume, ModSettings.VolumePerStroke.Value * 1.01f + 0.001f);
+            volume = Mathf.Min(volume, DrainTarPit.ModSettings.VolumePerStroke.Value * 1.01f + 0.001f);
             if (!InGrid(v, ToGrid(v, at))) { ModLog.Verbose(who + at.ToString("0.0") + " is outside the grid"); return; }
             bool local = ZDOMan.instance != null && sender == ZDOMan.GetSessionID();
             if (!local)
             {
                 var peer = ZNet.instance != null ? ZNet.instance.GetPeer(sender) : null;
-                float reach = ModSettings.MaxChainPieces.Value * 2.5f + 25f;
+                float reach = DrainTarPit.ModSettings.MaxChainPieces.Value * 2.5f + 25f;
                 if (peer == null || (peer.m_refPos - at).sqrMagnitude > reach * reach)
                 { ModLog.Verbose(who + (peer == null ? "unknown peer" : "sender farther than " + reach.ToString("0") + " m")); return; }
             }
@@ -140,7 +137,7 @@ namespace WaterAndTarPools.Drain
                 ", outside the rim " + (r.Outside * c2).ToString("0.00") + "), " + runoff.ToString("0.00") + " m3 reached the grid edge, " + rimRemoved.ToString("0.00") + " m3 removed at the rim, " + overflow.ToString("0.00") +
                 " m3 ran over the rim (thin, not tracked), " + unplaced.ToString("0.00") + " m3 unplaced (hop " + hop + ")";
             LastDiag = Diag;
-            if (ModSettings.DebugLog.Value) ModLog.Info("Pit " + v.name + " deposit: " + LastDeposit + " | " + Diag);
+            if (DrainTarPit.ModSettings.DebugLog.Value) ModLog.Info("Pit " + v.name + " deposit: " + LastDeposit + " | " + Diag);
         }
 
         internal static void FlushDeposits(LiquidVolume v)

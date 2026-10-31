@@ -1,16 +1,14 @@
+using DrainTarPit.Building;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
-using DrainTarPit.Building;
 using Kydl.Common;
 using WaterAndTarPools.Visuals;
 using HarmonyLib;
 using UnityEngine;
 using DrainTarPit;
 using DrainTarPit.Drain;
-using DrainTarPit.TextLocal;
-using DrainTarPit.Ui;
 using WaterAndTarPools.Ui;
 using WaterAndTarPools.Signs;
 
@@ -131,8 +129,8 @@ namespace WaterAndTarPools.Drain
             go.name = legacyName ?? (water ? (legacy ? LegacyWaterPrefabName : WaterPrefabName) : legacy ? LegacyTarPrefabName : PrefabName);
             var lv = go.GetComponentInChildren<LiquidVolume>(true);
             // water pools use finer cells: the surface mesh ends at a grid point, so the gap between the liquid and a wall is up to one cell wide
-            float cell = !legacy ? PoolSettings.LiquidCellSize.Value : CellScale;
-            int width = legacyWidth > 0 ? legacyWidth : legacy ? (water ? 48 : LegacyTarGridWidth) : Mathf.Clamp(Mathf.RoundToInt(PoolSettings.WaterPoolSize.Value / cell), 16, 128);
+            float cell = !legacy ? ModSettings.LiquidCellSize.Value : CellScale;
+            int width = legacyWidth > 0 ? legacyWidth : legacy ? (water ? 48 : LegacyTarGridWidth) : Mathf.Clamp(Mathf.RoundToInt(ModSettings.WaterPoolSize.Value / cell), 16, 128);
             Set(lv, "m_width", width);
             Set(lv, "m_scale", cell);
             Set(lv, "m_maxDepth", MaxDepth);
@@ -155,7 +153,7 @@ namespace WaterAndTarPools.Drain
                 if (FViscosity != null)
                 {
                     float v = (float)FViscosity.GetValue(lv);
-                    if (v > 0f) { _tarBaseVisc = v; FViscosity.SetValue(lv, v * PoolSettings.WaterFlow.Value); }     // flow between cells grows with sqrt(viscosity)
+                    if (v > 0f) { _tarBaseVisc = v; FViscosity.SetValue(lv, v * ModSettings.WaterFlow.Value); }     // flow between cells grows with sqrt(viscosity)
                 }
                 Set(lv, "m_randomEffectInterval", 1000000f);      // the tar's random bubble effects
                 Set(lv, "m_castShadow", false);
@@ -187,7 +185,7 @@ namespace WaterAndTarPools.Drain
         internal static void ApplyWaterFlow()
         {
             if (_tarBaseVisc <= 0f || FViscosity == null) return;
-            float value = _tarBaseVisc * PoolSettings.WaterFlow.Value;
+            float value = _tarBaseVisc * ModSettings.WaterFlow.Value;
             try
             {
                 foreach (var p in new[] { _waterPrefab, _legacyWaterPrefab })
@@ -260,7 +258,7 @@ namespace WaterAndTarPools.Drain
         /// Follows the stream from the nozzle (exit speed NozzlePressure along dir, gravity) until it hits ground. `time` = flight time.
         static Vector3 Landing(Vector3 pos, Vector3 dir, out float time)
         {
-            Vector3 v = dir.normalized * Mathf.Max(0.5f, ModSettings.NozzlePressure.Value), p = pos, g = new(0f, -9.81f, 0f);
+            Vector3 v = dir.normalized * Mathf.Max(0.5f, DrainTarPit.ModSettings.NozzlePressure.Value), p = pos, g = new(0f, -9.81f, 0f);
             const float dt = 0.02f;
             time = 0f;
             for (int i = 0; i < 250; i++)
@@ -402,7 +400,7 @@ namespace WaterAndTarPools.Drain
         /// false = the rest vanishes at the ground (booked as edgeDiscarded).
         public static bool Continue(LiquidVolume from, Vector3 edge, float volume, int hop, Vector3 origin, Vector3 prevAt)
         {
-            if (from == null || volume < 0.05f || hop > MaxRunoffHops || ZNetScene.instance == null || !PoolSettings.PoolRunoff.Value) return false;
+            if (from == null || volume < 0.05f || hop > MaxRunoffHops || ZNetScene.instance == null || !ModSettings.PoolRunoff.Value) return false;
             try
             {
                 var liquid = TarPits.LiquidOf(from);

@@ -2,10 +2,7 @@ using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
 using DrainTarPit;
-using DrainTarPit.Building;
 using DrainTarPit.Drain;
-using DrainTarPit.TextLocal;
-using DrainTarPit.Ui;
 using WaterAndTarPools.Ui;
 using WaterAndTarPools.Drain;
 using WaterAndTarPools.Signs;
@@ -59,8 +56,8 @@ namespace WaterAndTarPools.Visuals
 
         public static void Refresh()
         {
-            if (PoolSettings.PoolMeshFix != null) _enabled = PoolSettings.PoolMeshFix.Value;
-            if (PoolSettings.PoolMeshReach != null) _reach = Mathf.Clamp(PoolSettings.PoolMeshReach.Value, 1, 24);
+            if (ModSettings.PoolMeshFix != null) _enabled = ModSettings.PoolMeshFix.Value;
+            if (ModSettings.PoolMeshReach != null) _reach = Mathf.Clamp(ModSettings.PoolMeshReach.Value, 1, 24);
             WaterAndTarPools.Drain.PoolDebug.MarkMeshDirty(LiquidType.Water);       // the pools rebuild their mesh with the new setting
         }
 

@@ -6,10 +6,7 @@ using Kydl.Common;
 using UnityEngine;
 using UnityEngine.Rendering;
 using DrainTarPit;
-using DrainTarPit.Building;
 using DrainTarPit.Drain;
-using DrainTarPit.TextLocal;
-using DrainTarPit.Ui;
 using WaterAndTarPools.Ui;
 using WaterAndTarPools.Drain;
 using WaterAndTarPools.Signs;
@@ -38,7 +35,7 @@ namespace WaterAndTarPools.Visuals
             if (m == null) return "";
             var sh = m.shader;
             sb.AppendLine("# DrainTarPit water look - material '" + m.name + "', shader '" + (sh != null ? sh.name : "?") + "'");
-            sb.AppendLine("depth " + F(PoolSettings.WaterDepthLook.Value));
+            sb.AppendLine("depth " + F(ModSettings.WaterDepthLook.Value));
             sb.AppendLine("queue " + m.renderQueue);
             if (sh != null)
             {
@@ -139,8 +136,8 @@ namespace WaterAndTarPools.Visuals
                                 m.renderQueue = (int)Parse(p[1]); applied++;
                                 break;
                             case "depth":
-                                if (!allowDepth) { ModLog.Verbose("WaterLook: depth " + p[1] + " of the built-in look skipped ([Drain] WaterDepthLook keeps " + (PoolSettings.WaterDepthLook != null ? PoolSettings.WaterDepthLook.Value.ToString("0.00") : "?") + ")"); break; }
-                                if (PoolSettings.WaterDepthLook != null) { PoolSettings.WaterDepthLook.Value = Mathf.Clamp01(Parse(p[1])); applied++; }
+                                if (!allowDepth) { ModLog.Verbose("WaterLook: depth " + p[1] + " of the built-in look skipped ([Drain] WaterDepthLook keeps " + (ModSettings.WaterDepthLook != null ? ModSettings.WaterDepthLook.Value.ToString("0.00") : "?") + ")"); break; }
+                                if (ModSettings.WaterDepthLook != null) { ModSettings.WaterDepthLook.Value = Mathf.Clamp01(Parse(p[1])); applied++; }
                                 break;
                         }
                     }

@@ -6,10 +6,7 @@ using Kydl.Common;
 using WaterAndTarPools.Visuals;
 using UnityEngine;
 using DrainTarPit;
-using DrainTarPit.Building;
 using DrainTarPit.Drain;
-using DrainTarPit.TextLocal;
-using DrainTarPit.Ui;
 using WaterAndTarPools.Ui;
 using WaterAndTarPools.Drain;
 
@@ -45,7 +42,7 @@ namespace WaterAndTarPools.Signs
             get
             {
                 var w = World();
-                return w ?? (PoolSettings.WaterStyle != null ? PoolSettings.WaterStyle.Value : WaterStyleOption.Game);
+                return w ?? (ModSettings.WaterStyle != null ? ModSettings.WaterStyle.Value : WaterStyleOption.Game);
             }
         }
 

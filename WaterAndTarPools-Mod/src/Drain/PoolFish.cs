@@ -3,10 +3,7 @@ using Kydl.Common;
 using HarmonyLib;
 using UnityEngine;
 using DrainTarPit;
-using DrainTarPit.Building;
 using DrainTarPit.Drain;
-using DrainTarPit.TextLocal;
-using DrainTarPit.Ui;
 using WaterAndTarPools.Ui;
 using WaterAndTarPools.Visuals;
 using WaterAndTarPools.Signs;
@@ -244,7 +241,7 @@ namespace WaterAndTarPools.Drain
         /// Holds a fish in its pool. Returns 0 = nothing to do, 1 = stopped at the edge, 2 = put back into the water.
         static int KeepIn(Fish f, State st)
         {
-            if (PoolSettings.PoolFishStayIn == null || !PoolSettings.PoolFishStayIn.Value || !PoolSettings.On) return 0;
+            if (ModSettings.PoolFishStayIn == null || !ModSettings.PoolFishStayIn.Value || !ModSettings.PoolsOn) return 0;
             var nv = Nview(f); var b = Body(f);
             if (nv == null || !nv.IsValid() || !nv.IsOwner() || b == null) return 0;
             Vector3 pos = b.position;
@@ -314,7 +311,7 @@ namespace WaterAndTarPools.Drain
         // in is put back into that pool. Only the owner; looked at every RecheckEvery steps of the fish (the fixed-update prefix).
         static int Rescue(Fish f, State st)
         {
-            if (PoolSettings.PoolFishStayIn == null || !PoolSettings.PoolFishStayIn.Value || !PoolSettings.On || WaterVol(f) != null || !f.IsOutOfWater()) return 0;
+            if (ModSettings.PoolFishStayIn == null || !ModSettings.PoolFishStayIn.Value || !ModSettings.PoolsOn || WaterVol(f) != null || !f.IsOutOfWater()) return 0;
             var nv = Nview(f); var b = Body(f);
             if (nv == null || !nv.IsValid() || !nv.IsOwner() || b == null || Time.time < st.NextTry) return 0;
             st.NextTry = Time.time + 1f;

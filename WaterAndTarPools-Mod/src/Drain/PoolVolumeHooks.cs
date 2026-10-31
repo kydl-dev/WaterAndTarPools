@@ -64,7 +64,7 @@ namespace WaterAndTarPools.Drain
             static void Prefix(LiquidVolume __instance, out object __state)
             {
                 __state = null;
-                try { if (PoolSettings.PoolWalls.Value && IsLiquid(__instance) && IsPumpPool(__instance)) __state = Hold(__instance); }
+                try { if (ModSettings.PoolWalls.Value && IsLiquid(__instance) && IsPumpPool(__instance)) __state = Hold(__instance); }
                 catch (System.Exception e) { ModLog.VerboseWarn("UpdateHeights lock: " + e.Message); }
             }
 

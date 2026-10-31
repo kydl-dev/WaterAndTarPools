@@ -9,5 +9,7 @@
     <Reference Include="UnityEngine.CoreModule"><HintPath>$(ValheimRefs)\UnityEngine.CoreModule.dll</HintPath><Private>true</Private></Reference>
     <Reference Include="Mono.Cecil"><HintPath>$(ValheimRefs)\Mono.Cecil.dll</HintPath><Private>true</Private></Reference>
     <Reference Include="System.Web.Extensions" />
+    <!-- the mod needs DrainTarPit (hard dependency): copied next to the tests so the types of WaterAndTarPools.dll can be loaded by reflection -->
+    <Reference Include="DrainTarPit"><HintPath>$(MSBuildThisFileDirectory)..\..\..\DrainTarPit\DrainTarPit-Mod\build\DrainTarPit.dll</HintPath><Private>true</Private></Reference>
   </ItemGroup>
 </Project>

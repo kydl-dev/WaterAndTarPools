@@ -1,9 +1,6 @@
 using UnityEngine;
 using DrainTarPit;
-using DrainTarPit.Building;
 using DrainTarPit.Drain;
-using DrainTarPit.TextLocal;
-using DrainTarPit.Ui;
 using WaterAndTarPools.Ui;
 using WaterAndTarPools.Visuals;
 using WaterAndTarPools.Signs;
@@ -19,7 +16,7 @@ namespace WaterAndTarPools.Drain
     /// </summary>
     internal static class RunoffRules
     {
-        public const float MaxRunoffDistance = 20f;             // m, horizontal, from the landing point of the player's stroke
+        public const float MaxRunoffDistance = RunoffMath.MaxRunoffDistance;   // m, horizontal, from the landing point of the player's stroke
 
         static readonly System.Reflection.FieldInfo FWaterLevel = HarmonyLib.AccessTools.Field(typeof(ZoneSystem), "m_waterLevel");
 
@@ -34,12 +31,8 @@ namespace WaterAndTarPools.Drain
         /// `into` = where the runoff would land in the next pool, `origin` = where the stroke was poured, `prevAt` = where it landed in the pool it leaves.
         internal static bool Allowed(Vector3 into, Vector3 origin, Vector3 prevAt, out string why)
         {
-            float far = Flat(into - origin);
-            if (far > MaxRunoffDistance) { why = "stops " + far.ToString("0.0") + " m from where it was poured (limit " + MaxRunoffDistance + " m) - vanishes at the ground"; return false; }
-            if (far <= Flat(prevAt - origin) + 0.25f) { why = "would flow back towards where it was poured - vanishes here"; return false; }
-            if (ZoneSystem.instance != null && ZoneSystem.instance.GetGroundHeight(into) < SeaLevel()) { why = "reached the sea / a river - joins it"; return false; }
-            why = "";
-            return true;
+            return RunoffMath.Decide(Flat(into - origin), Flat(prevAt - origin),
+                () => ZoneSystem.instance != null && ZoneSystem.instance.GetGroundHeight(into) < SeaLevel(), out why);
         }
     }
 }

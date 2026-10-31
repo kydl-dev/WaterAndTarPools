@@ -4,8 +4,6 @@ using Kydl.Common;
 using UnityEngine;
 using DrainTarPit;
 using DrainTarPit.Drain;
-using DrainTarPit.TextLocal;
-using DrainTarPit.Ui;
 using WaterAndTarPools.Ui;
 using WaterAndTarPools.Drain;
 using WaterAndTarPools.Signs;

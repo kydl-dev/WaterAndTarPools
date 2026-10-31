@@ -3,10 +3,7 @@ using UnityEngine;
 using static DrainTarPit.Drain.TarPits;
 using static WaterAndTarPools.Drain.TarPitWalls;
 using DrainTarPit;
-using DrainTarPit.Building;
 using DrainTarPit.Drain;
-using DrainTarPit.TextLocal;
-using DrainTarPit.Ui;
 using WaterAndTarPools.Ui;
 using WaterAndTarPools.Visuals;
 using WaterAndTarPools.Signs;
@@ -58,7 +55,7 @@ namespace WaterAndTarPools.Drain
             var d = Depths(v);
             int w = v.m_width, n = (w + 1) * (w + 1);
             if (d == null || d.Count < n) return false;
-            float film = PoolSettings.PoolFilmDepth.Value, sum = 0f;
+            float film = ModSettings.PoolFilmDepth.Value, sum = 0f;
             using (Hold(v))
             {
                 for (int i = 0; i < n; i++)

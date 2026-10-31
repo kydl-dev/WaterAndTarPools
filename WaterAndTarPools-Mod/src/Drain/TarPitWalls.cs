@@ -1,6 +1,6 @@
+using DrainTarPit.Building;
 using System.Collections.Generic;
 using System.Reflection;
-using DrainTarPit.Building;
 using Kydl.Common;
 using HarmonyLib;
 using UnityEngine;
@@ -8,8 +8,6 @@ using static DrainTarPit.Drain.TarPits;
 using static WaterAndTarPools.Drain.TarPitStats;
 using DrainTarPit;
 using DrainTarPit.Drain;
-using DrainTarPit.TextLocal;
-using DrainTarPit.Ui;
 using WaterAndTarPools.Ui;
 using WaterAndTarPools.Visuals;
 using WaterAndTarPools.Signs;
@@ -166,7 +164,7 @@ namespace WaterAndTarPools.Drain
 
         internal static void ApplyWalls(LiquidVolume v)
         {
-            if (!PoolSettings.PoolWalls.Value || !IsLiquid(v) || !IsPumpPool(v) || FMaxDepth == null) return;
+            if (!ModSettings.PoolWalls.Value || !IsLiquid(v) || !IsPumpPool(v) || FMaxDepth == null) return;
             var h = Heights(v); var d = Depths(v);
             int w = v.m_width, stride = w + 1, n = stride * stride;
             if (h == null || d == null || h.Count < n || d.Count < n) return;

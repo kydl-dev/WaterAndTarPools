@@ -4,10 +4,7 @@ using Kydl.Common;
 using HarmonyLib;
 using UnityEngine;
 using DrainTarPit;
-using DrainTarPit.Building;
 using DrainTarPit.Drain;
-using DrainTarPit.TextLocal;
-using DrainTarPit.Ui;
 using WaterAndTarPools.Ui;
 using WaterAndTarPools.Drain;
 using WaterAndTarPools.Signs;
@@ -53,7 +50,7 @@ namespace WaterAndTarPools.Visuals
             get
             {
                 Material sm;
-                var style = PoolSettings.WaterStyle != null ? PoolSettings.WaterStyle.Value : WaterStyleOption.Game;
+                var style = ModSettings.WaterStyle != null ? ModSettings.WaterStyle.Value : WaterStyleOption.Game;
                 if (style != WaterStyleOption.Game && StyleMats.TryGetValue(style, out sm) && sm != null) return sm;    // the editor tunes the style in use (not saved)
                 return _vanilla != null ? _vanilla : _clear;
             }
@@ -179,7 +176,7 @@ namespace WaterAndTarPools.Visuals
 
         static void Configure(Material m)
         {
-            float d = Mathf.Clamp01(PoolSettings.WaterDepthLook.Value);
+            float d = Mathf.Clamp01(ModSettings.VisualsEnable.Value ? ModSettings.WaterDepthLook.Value : (float)ModSettings.WaterDepthLook.DefaultValue);
             m.SetFloatArray("_depth", new[] { d, d, d, d });
             m.SetFloat("_UseGlobalWind", 0f);                                      // a pool has no open-sea swell
         }

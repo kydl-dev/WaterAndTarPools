@@ -13,8 +13,8 @@ namespace WaterAndTarPools.Testing
     {
         static string Startup_ConfigBound()
         {
-            if (PoolSettings.EnableAll == null || PoolSettings.DebugLog == null) return "FAIL: PoolSettings.Bind did not run (EnableAll / DebugLog null)";
-            string r = PoolSettings.On ? "PASS: on (own EnableAll and DrainTarPit's), debug log " + PoolSettings.DebugLog.Value : "SKIP: off (EnableAll here or in DrainTarPit)";
+            if (ModSettings.EnableAll == null || ModSettings.DebugLog == null) return "FAIL: ModSettings.Bind did not run (EnableAll / DebugLog null)";
+            string r = ModSettings.On ? "PASS: on (own EnableAll and DrainTarPit's), debug log " + ModSettings.DebugLog.Value : "SKIP: off (EnableAll here or in DrainTarPit)";
             ModLog.Verbose("InGameTests: Startup_ConfigBound -> " + r);
             return r;
         }

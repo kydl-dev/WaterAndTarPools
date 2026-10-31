@@ -3,10 +3,7 @@ using Kydl.Common;
 using TMPro;
 using UnityEngine;
 using DrainTarPit;
-using DrainTarPit.Building;
 using DrainTarPit.Drain;
-using DrainTarPit.TextLocal;
-using DrainTarPit.Ui;
 using WaterAndTarPools.Ui;
 using WaterAndTarPools.Drain;
 using WaterAndTarPools.Visuals;
@@ -104,7 +101,7 @@ namespace WaterAndTarPools.Signs
             {
                 before = "#" + ColorUtility.ToHtmlStringRGBA(m.GetColor(ShaderUtilities.ID_FaceColor));
                 // T-59b (user: "a bit more brighter"): [Visuals] SignTextBrightness lifts the face colour above white (HDR), so the picked colours read brighter
-                float b = PoolSettings.SignTextBrightness != null ? PoolSettings.SignTextBrightness.Value : 1f;
+                float b = ModSettings.SignTextBrightness != null ? ModSettings.SignTextBrightness.Value : 1f;
                 m.SetColor(ShaderUtilities.ID_FaceColor, new Color(b, b, b, 1f));
                 before += " -> x" + b.ToString("0.00");
             }

@@ -4,10 +4,7 @@ using Kydl.Common;
 using UnityEngine;
 using static DrainTarPit.Drain.TarPits;
 using DrainTarPit;
-using DrainTarPit.Building;
 using DrainTarPit.Drain;
-using DrainTarPit.TextLocal;
-using DrainTarPit.Ui;
 using WaterAndTarPools.Ui;
 using WaterAndTarPools.Visuals;
 using WaterAndTarPools.Signs;
@@ -58,7 +55,7 @@ namespace WaterAndTarPools.Drain
             var b = Of(v);
             b.Lines.Add(new KeyValuePair<float, string>(Time.time, line));
             if (b.Lines.Count > MaxLines) b.Lines.RemoveRange(0, b.Lines.Count - MaxLines);
-            if (ModSettings.DebugLog.Value) ModLog.Info("Ledger " + Id(v) + " t=" + Time.time.ToString("0.00", CultureInfo.InvariantCulture) + ": " + line);
+            if (DrainTarPit.ModSettings.DebugLog.Value) ModLog.Info("Ledger " + Id(v) + " t=" + Time.time.ToString("0.00", CultureInfo.InvariantCulture) + ": " + line);
         }
 
         /// A stage that may change the volume: `before` / `after` are the pool totals (m3) measured around it.

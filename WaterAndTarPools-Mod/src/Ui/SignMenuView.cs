@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-using DrainTarPit.Ui;
+using Kydl.Ui;
 using WaterAndTarPools.Signs;
 
 namespace WaterAndTarPools.Ui
@@ -44,7 +44,7 @@ namespace WaterAndTarPools.Ui
             _name = name ?? "";
             _style = style != null ? style.Clone() : new SignStyle();
             UiScroll body;
-            Window = UiKit.Window(_host.T("dtp_ui_sign_title"), _host.T("dtp_ui_esc_close"), () => _host.Close("X"), out body);
+            Window = UiKit.Window(_host.T("wtp_ui_sign_title"), _host.T("wtp_ui_esc_close"), () => _host.Close("X"), out body);
             _content = body.Content;
             Build();
             UiLog.Verbose("SignMenuView: built for '" + _name + "' (" + _host.Fonts.Count + " font(s), style " + _style + ")");
@@ -67,66 +67,66 @@ namespace WaterAndTarPools.Ui
         {
             _content.Clear();
 
-            _content.Add(UiControls.Heading(_host.T("dtp_ui_name")));
+            _content.Add(UiControls.Heading(_host.T("wtp_ui_name")));
             _content.Add(UiControls.TextField(_name, _host.MaxLetters * 2, v => { _name = v; RebuildLetters(); Changed("name"); }));
             var emo = new VisualElement(); emo.style.flexDirection = FlexDirection.Row; emo.style.flexWrap = Wrap.Wrap; emo.style.flexShrink = 0;
             foreach (var e in Emoji) { string em = e; emo.Add(UiControls.Button(em, () => AddEmoji(em))); }
-            _content.Add(UiControls.Row(_host.T("dtp_ui_emoji"), emo));
-            _content.Add(UiControls.Note(_host.T("dtp_ui_emoji_note")));
+            _content.Add(UiControls.Row(_host.T("wtp_ui_emoji"), emo));
+            _content.Add(UiControls.Note(_host.T("wtp_ui_emoji_note")));
 
-            _content.Add(UiControls.Heading(_host.T("dtp_ui_text")));
+            _content.Add(UiControls.Heading(_host.T("wtp_ui_text")));
             var fonts = new List<string> { "" }; fonts.AddRange(_host.Fonts);
-            _content.Add(UiControls.Row(_host.T("dtp_ui_font"), UiControls.Dropdown(fonts, _style.Font, f => f.Length == 0 ? _host.T("dtp_ui_font_default") : f, f => { _style.Font = f; Changed("font"); })));
-            _content.Add(UiControls.Row(_host.T("dtp_ui_size"), UiControls.Line(
-                UiControls.Toggle(_host.T("dtp_ui_auto"), _style.Size <= 0f, on => { _style.Size = on ? 0f : 4f; Changed("auto size " + on); }),
+            _content.Add(UiControls.Row(_host.T("wtp_ui_font"), UiControls.Dropdown(fonts, _style.Font, f => f.Length == 0 ? _host.T("wtp_ui_font_default") : f, f => { _style.Font = f; Changed("font"); })));
+            _content.Add(UiControls.Row(_host.T("wtp_ui_size"), UiControls.Line(
+                UiControls.Toggle(_host.T("wtp_ui_auto"), _style.Size <= 0f, on => { _style.Size = on ? 0f : 4f; Changed("auto size " + on); }),
                 Grow(UiControls.Slider(SignStyle.MinSize, SignStyle.MaxSize, _style.Size <= 0f ? 4f : _style.Size, "0.0", v => { _style.Size = v; Changed("size"); })))));
-            _content.Add(UiControls.Row(_host.T("dtp_ui_style"), UiControls.Line(
-                UiControls.Toggle(_host.T("dtp_ui_bold"), _style.Bold, on => { _style.Bold = on; Changed("bold"); }),
-                UiControls.Toggle(_host.T("dtp_ui_italic"), _style.Italic, on => { _style.Italic = on; Changed("italic"); }),
-                UiControls.Toggle(_host.T("dtp_ui_underline"), _style.Underline, on => { _style.Underline = on; Changed("underline"); }),
-                UiControls.Toggle(_host.T("dtp_ui_strike"), _style.Strike, on => { _style.Strike = on; Changed("strike"); }),
-                UiControls.Toggle(_host.T("dtp_ui_upper"), _style.Upper, on => { _style.Upper = on; Changed("upper case"); }))));
+            _content.Add(UiControls.Row(_host.T("wtp_ui_style"), UiControls.Line(
+                UiControls.Toggle(_host.T("wtp_ui_bold"), _style.Bold, on => { _style.Bold = on; Changed("bold"); }),
+                UiControls.Toggle(_host.T("wtp_ui_italic"), _style.Italic, on => { _style.Italic = on; Changed("italic"); }),
+                UiControls.Toggle(_host.T("wtp_ui_underline"), _style.Underline, on => { _style.Underline = on; Changed("underline"); }),
+                UiControls.Toggle(_host.T("wtp_ui_strike"), _style.Strike, on => { _style.Strike = on; Changed("strike"); }),
+                UiControls.Toggle(_host.T("wtp_ui_upper"), _style.Upper, on => { _style.Upper = on; Changed("upper case"); }))));
             var aligns = new List<string> { "l", "c", "r" };
-            _content.Add(UiControls.Row(_host.T("dtp_ui_align"), UiControls.Dropdown(aligns, _style.Align.ToString(), AlignName, a => { _style.Align = a[0]; Changed("align"); })));
-            _content.Add(UiControls.Row(_host.T("dtp_ui_spacing"), UiControls.Slider(-20f, 50f, _style.Spacing, "0", v => { _style.Spacing = v; Changed("spacing"); })));
+            _content.Add(UiControls.Row(_host.T("wtp_ui_align"), UiControls.Dropdown(aligns, _style.Align.ToString(), AlignName, a => { _style.Align = a[0]; Changed("align"); })));
+            _content.Add(UiControls.Row(_host.T("wtp_ui_spacing"), UiControls.Slider(-20f, 50f, _style.Spacing, "0", v => { _style.Spacing = v; Changed("spacing"); })));
 
-            _content.Add(UiControls.Heading(_host.T("dtp_ui_colour")));
+            _content.Add(UiControls.Heading(_host.T("wtp_ui_colour")));
             System.Action<string> setBase;
             _content.Add(UiControls.ColorPicker(_style.Color, BaseColour, out setBase));
 
-            _content.Add(UiControls.Heading(_host.T("dtp_ui_letters")));
-            _content.Add(UiControls.Note(_host.T("dtp_ui_letters_note")));
+            _content.Add(UiControls.Heading(_host.T("wtp_ui_letters")));
+            _content.Add(UiControls.Note(_host.T("wtp_ui_letters_note")));
             _letters = new VisualElement(); _letters.style.flexDirection = FlexDirection.Row; _letters.style.flexWrap = Wrap.Wrap; _letters.style.flexShrink = 0;
             _content.Add(_letters);
             RebuildLetters();
             _content.Add(UiControls.Line(
-                UiControls.Button(_host.T("dtp_ui_all"), SelectAll),
-                UiControls.Button(_host.T("dtp_ui_none"), () => { _selected.Clear(); RebuildLetters(); }),
-                UiControls.Button(_host.T("dtp_ui_paint"), Paint),
-                UiControls.Button(_host.T("dtp_ui_rainbow"), Rainbow),
-                UiControls.Button(_host.T("dtp_ui_gradient"), Gradient),
-                UiControls.Button(_host.T("dtp_ui_clear"), ClearLetters)));
+                UiControls.Button(_host.T("wtp_ui_all"), SelectAll),
+                UiControls.Button(_host.T("wtp_ui_none"), () => { _selected.Clear(); RebuildLetters(); }),
+                UiControls.Button(_host.T("wtp_ui_paint"), Paint),
+                UiControls.Button(_host.T("wtp_ui_rainbow"), Rainbow),
+                UiControls.Button(_host.T("wtp_ui_gradient"), Gradient),
+                UiControls.Button(_host.T("wtp_ui_clear"), ClearLetters)));
             System.Action<string> setLetter;
             _content.Add(UiControls.ColorPicker(_letterColour, LetterColour, out setLetter));
 
-            _content.Add(UiControls.Heading(_host.T("dtp_ui_pref")));
+            _content.Add(UiControls.Heading(_host.T("wtp_ui_pref")));
             _content.Add(UiControls.Line(
-                UiControls.Button(_host.T("dtp_ui_pref_save"), () => { int n = _host.SavePreferred(_style); Status(_host.T(n > 0 ? "dtp_ui_pref_saved" : "dtp_ui_pref_failed")); }),
-                UiControls.Button(_host.T("dtp_ui_pref_use"), UsePreferred),
-                UiControls.Button(_host.T("dtp_ui_reset"), ResetStyle)));
+                UiControls.Button(_host.T("wtp_ui_pref_save"), () => { int n = _host.SavePreferred(_style); Status(_host.T(n > 0 ? "wtp_ui_pref_saved" : "wtp_ui_pref_failed")); }),
+                UiControls.Button(_host.T("wtp_ui_pref_use"), UsePreferred),
+                UiControls.Button(_host.T("wtp_ui_reset"), ResetStyle)));
 
             _status = UiControls.Note("");
             _content.Add(_status);
             var bottom = UiControls.Line(
-                UiControls.Button(_host.T("dtp_ui_save"), () => _host.Save(_name, _style), true),
-                UiControls.Button(_host.T("dtp_ui_cancel"), () => _host.Close("Cancel")));
+                UiControls.Button(_host.T("wtp_ui_save"), () => _host.Save(_name, _style), true),
+                UiControls.Button(_host.T("wtp_ui_cancel"), () => _host.Close("Cancel")));
             bottom.style.justifyContent = Justify.FlexEnd; bottom.style.marginTop = 12;
             _content.Add(bottom);
         }
 
         static VisualElement Grow(VisualElement e) { e.style.flexGrow = 1; e.style.minWidth = 200; return e; }
 
-        string AlignName(string a) { return _host.T(a == "l" ? "dtp_ui_left" : a == "r" ? "dtp_ui_right" : "dtp_ui_center"); }
+        string AlignName(string a) { return _host.T(a == "l" ? "wtp_ui_left" : a == "r" ? "wtp_ui_right" : "wtp_ui_center"); }
 
         // --- letters ---------------------------------------------------------------------------------------------------------
         void RebuildLetters()
@@ -169,7 +169,7 @@ namespace WaterAndTarPools.Ui
             _style.Color = h;
             int n = SignStyle.SplitLetters(_name).Count, own = 0;
             for (int i = 0; i < n; i++) if (_style.Letters.ContainsKey(i)) own++;
-            if (n > 0 && own == n) { _style.Letters.Clear(); Status(_host.T("dtp_ui_letters_reset")); UiLog.Verbose("SignMenuView: all " + n + " letters had their own colour, cleared for the text colour " + h); }
+            if (n > 0 && own == n) { _style.Letters.Clear(); Status(_host.T("wtp_ui_letters_reset")); UiLog.Verbose("SignMenuView: all " + n + " letters had their own colour, cleared for the text colour " + h); }
             RebuildLetters(); Changed("colour " + h);
         }
 
@@ -185,7 +185,7 @@ namespace WaterAndTarPools.Ui
         void Paint()
         {
             var sel = Sel();
-            if (sel.Count == 0) { Status(_host.T("dtp_ui_select_first")); return; }
+            if (sel.Count == 0) { Status(_host.T("wtp_ui_select_first")); return; }
             foreach (int i in sel) _style.Letters[i] = _letterColour;
             RebuildLetters(); Changed("painted " + sel.Count + " letter(s) " + _letterColour);
         }
@@ -193,7 +193,7 @@ namespace WaterAndTarPools.Ui
         void Rainbow()
         {
             var sel = Sel();
-            if (sel.Count == 0) { Status(_host.T("dtp_ui_select_first")); return; }
+            if (sel.Count == 0) { Status(_host.T("wtp_ui_select_first")); return; }
             for (int k = 0; k < sel.Count; k++)
                 _style.Letters[sel[k]] = "#" + ColorUtility.ToHtmlStringRGB(Color.HSVToRGB(sel.Count == 1 ? 0f : k / (float)sel.Count, 0.85f, 1f));
             RebuildLetters(); Changed("rainbow over " + sel.Count + " letter(s)");
@@ -203,7 +203,7 @@ namespace WaterAndTarPools.Ui
         void Gradient()
         {
             var sel = Sel();
-            if (sel.Count == 0) { Status(_host.T("dtp_ui_select_first")); return; }
+            if (sel.Count == 0) { Status(_host.T("wtp_ui_select_first")); return; }
             int n = _style.Gradient(sel[0], sel[sel.Count - 1], _style.Color, _letterColour);
             RebuildLetters(); Changed("gradient over " + n + " letter(s) " + _style.Color + " -> " + _letterColour);
         }
@@ -218,7 +218,7 @@ namespace WaterAndTarPools.Ui
 
         void AddEmoji(string em)
         {
-            if (SignStyle.SplitLetters(_name).Count >= _host.MaxLetters) { Status(_host.T("dtp_ui_name_full")); return; }
+            if (SignStyle.SplitLetters(_name).Count >= _host.MaxLetters) { Status(_host.T("wtp_ui_name_full")); return; }
             _name += em;
             Build();                                                       // the name field shows the new text
             Changed("emoji added");
@@ -228,11 +228,11 @@ namespace WaterAndTarPools.Ui
         void UsePreferred()
         {
             var p = _host.LoadPreferred();
-            if (p == null) { Status(_host.T("dtp_ui_pref_none")); return; }
+            if (p == null) { Status(_host.T("wtp_ui_pref_none")); return; }
             _style = p;
             Build();
             Changed("preferred style used");
-            Status(_host.T("dtp_ui_pref_used"));
+            Status(_host.T("wtp_ui_pref_used"));
         }
 
         /// T-56R (user: "a 3rd button: Reset to default style"): every style value back to the default; the name stays.
@@ -241,7 +241,7 @@ namespace WaterAndTarPools.Ui
             _style = new SignStyle();
             Build();
             Changed("reset to the default style");
-            Status(_host.T("dtp_ui_reset_done"));
+            Status(_host.T("wtp_ui_reset_done"));
         }
     }
 }

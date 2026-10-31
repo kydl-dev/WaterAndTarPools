@@ -1,10 +1,7 @@
 using UnityEngine;
 using static DrainTarPit.Drain.TarPits;
 using DrainTarPit;
-using DrainTarPit.Building;
 using DrainTarPit.Drain;
-using DrainTarPit.TextLocal;
-using DrainTarPit.Ui;
 using WaterAndTarPools.Ui;
 using WaterAndTarPools.Visuals;
 using WaterAndTarPools.Signs;
@@ -33,8 +30,8 @@ namespace WaterAndTarPools.Drain
             // vanilla pit: -m_maxDepth means a ray that started inside the ground / hit nothing, treated as solid.
             var opt = new HeightField.FillOptions
             {
-                Overflow = PoolSettings.PoolOverflow.Value,
-                RimDisappear = PoolSettings.PoolRimDisappear != null && PoolSettings.PoolRimDisappear.Value,
+                Overflow = ModSettings.PoolOverflow.Value,
+                RimDisappear = ModSettings.PoolRimDisappear != null && ModSettings.PoolRimDisappear.Value,
                 Buried = IsPumpPool(v) ? float.NegativeInfinity : -maxDepth + 0.03f,
                 MaxDepth = maxDepth
             };

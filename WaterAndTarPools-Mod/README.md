@@ -24,7 +24,9 @@ Add-on for **DrainTarPit** (required). With it, everything your hand pump moves 
 
 Press **E** on the sign to name the pool and style the name: any font of the game, size, bold / italic / underline / strike / upper case, alignment, letter spacing, a colour, a colour per letter (paint, rainbow, gradient) and emoji. Save a preferred style and reuse it on the next sign. Everyone sees the same sign.
 
-## Pool menu (F9)
+## Pools tab (F6)
+
+Press **F6** to open the KY hub, the one menu of all KydlDev mods, and pick **WaterAndTarPools > Pools**.
 
 - Every pool with a named sign in the world, with its position and the closest portal.
 - Pick **your own water style per pool** - only you see it, saved on your PC for each world.
@@ -40,8 +42,8 @@ Press **E** on the sign to name the pool and style the name: any font of the gam
 | DebugLog | `Enable` - detailed log lines for bug reports |
 | Effects | `EffectsVolume` (water splash), `WaterSplashSound`, `WaterSlugFlow` (water visible in see-through hoses) |
 | Pools | `MinWaterDepth`, `PoolWalls`, `PoolRimDisappear`, `PoolOverflow`, `PoolRunoff`, `PoolShedFilm`, `PoolFilmEvaporates`, `PoolFishStayIn`, `PoolJumpBoost`, `PoolJumpPresses`, `PoolJumpHeight`, `WaterPoolSize`, `LiquidCellSize`, `WaterFlow` |
-| Visuals | `WaterDepthLook` (Game style only), `PoolMenuKey` |
+| Visuals | `WaterDepthLook` (Game style only) |
 
 ## Requirements
 
-DrainTarPit, BepInEx and Jotunn. **Everyone on the server needs the mod.** English and German; other languages show English.
+DrainTarPit, KydlCore (the F6 hub and the shared UI), BepInEx and Jotunn. **Everyone on the server needs the mod.** English only.

@@ -12,10 +12,7 @@ using static WaterAndTarPools.Debug.PoolSnapshot;
 using static WaterAndTarPools.Debug.PoolObserver;
 using static WaterAndTarPools.Debug.PoolTests;
 using DrainTarPit;
-using DrainTarPit.Building;
 using DrainTarPit.Drain;
-using DrainTarPit.TextLocal;
-using DrainTarPit.Ui;
 using WaterAndTarPools.Ui;
 using WaterAndTarPools.Drain;
 using WaterAndTarPools.Visuals;
@@ -60,7 +57,7 @@ namespace WaterAndTarPools.Debug
             Vector3 land;
             if (!Crosshair(out land)) { Say("ptest pour: the crosshair points at nothing within 80 m."); yield break; }
             var p = Player.m_localPlayer.transform.position;
-            float vol = ModSettings.VolumePerStroke.Value;
+            float vol = DrainTarPit.ModSettings.VolumePerStroke.Value;
             Out("=== POUR " + strokes + " strokes of " + F2(vol) + " m3 every " + F2(interval) + " s at the crosshair " + land.ToString("0.00") + " (the real deposit path), then " + F2(PoolHoldAfterPour) + " s of watching");
             Out(EnvLine(land)); Out(ConfigLine());
             // Record all overlapping pools, then observe the exact instance returned by DebugPour. Do not re-select a nearby pool after the pour.

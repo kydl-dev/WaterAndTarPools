@@ -12,10 +12,7 @@ using static WaterAndTarPools.Debug.PoolRunTests;
 using static WaterAndTarPools.Debug.PoolTankTests;
 using static WaterAndTarPools.Debug.PoolProbe;
 using DrainTarPit;
-using DrainTarPit.Building;
 using DrainTarPit.Drain;
-using DrainTarPit.TextLocal;
-using DrainTarPit.Ui;
 using WaterAndTarPools.Ui;
 using WaterAndTarPools.Drain;
 using WaterAndTarPools.Visuals;
@@ -59,7 +56,7 @@ namespace WaterAndTarPools.Debug
             if (sub == "stop") { Cancel = true; Say("ptest: stopping the running test."); return; }
             if (sub == "out")
             {
-                if (args.Length > 1) { ModSettings.TestOutDir.Value = CleanPath(string.Join(" ", args, 1, args.Length - 1)); }
+                if (args.Length > 1) { DrainTarPit.ModSettings.TestOutDir.Value = CleanPath(string.Join(" ", args, 1, args.Length - 1)); }
                 Say("ptest: report file = " + Path.Combine(OutDir(), ReportFile));
                 return;
             }

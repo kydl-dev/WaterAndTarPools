@@ -25,13 +25,13 @@ namespace WaterAndTarPools.Drain
 
         internal static void ShedFilms(LiquidVolume v, float dt)
         {
-            if (!PoolSettings.PoolShedFilm.Value || !IsLiquid(v) || !IsPumpPool(v) || !HeightsReady(v)) return;
+            if (!ModSettings.PoolShedFilm.Value || !IsLiquid(v) || !IsPumpPool(v) || !HeightsReady(v)) return;
             var nv = Nview(v);
             if (nv == null || !nv.IsValid() || !nv.IsOwner()) return;
             var d = Depths(v); var h = Heights(v);
             int w = v.m_width, stride = w + 1, n = stride * stride;
             if (d == null || h == null || d.Count < n || h.Count < n) return;
-            float film = PoolSettings.PoolFilmDepth.Value;
+            float film = ModSettings.PoolFilmDepth.Value;
             if (_filmGot.Length < n) _filmGot = new bool[n];
             bool changed = false;
             float edgeSum = 0f, evapSum = 0f;       // depth sums (cell units) that left the pool in this pass, for the editor's budget
@@ -54,7 +54,7 @@ namespace WaterAndTarPools.Drain
                             if (sj < bs) { bs = sj; best = j; }
                         }
                         if (best >= 0) { d[best] += di; d[i] = 0f; _filmGot[best] = true; changed = true; }
-                        else if (!deeper && PoolSettings.PoolFilmEvaporates.Value) { float ev = Mathf.Min(di, FilmEvaporation * dt); evapSum += ev; d[i] = di - ev; changed = true; }     // [Drain] PoolFilmEvaporates (default off) - it was bound but never read, so thin pools always evaporated
+                        else if (!deeper && ModSettings.PoolFilmEvaporates.Value) { float ev = Mathf.Min(di, FilmEvaporation * dt); evapSum += ev; d[i] = di - ev; changed = true; }     // [Drain] PoolFilmEvaporates (default off) - it was bound but never read, so thin pools always evaporated
                     }
                 if (changed) FDirty.SetValue(v, true);
             }
