@@ -1,4 +1,4 @@
-using Kydl.Common;
+using KydlCore.Common;
 using WaterAndTarPools.Signs;
 
 namespace WaterAndTarPools.Testing

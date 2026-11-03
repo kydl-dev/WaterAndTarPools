@@ -1,10 +1,11 @@
 using System.Collections.Generic;
-using Kydl.Common;
+using KydlCore.Common;
 using KydlCore;
 using UnityEngine;
 using WaterAndTarPools.Visuals;
 using DrainTarPit;
 using WaterAndTarPools.Ui;
+using KydlCore.Features.Hub.Contracts;
 
 namespace WaterAndTarPools.Signs
 {

@@ -1,6 +1,6 @@
 using System.Linq;
 using BepInEx.Bootstrap;
-using Kydl.Common;
+using KydlCore.Common;
 
 namespace WaterAndTarPools.Testing
 {

@@ -1,5 +1,5 @@
 using System.Runtime.CompilerServices;
-using Kydl.Common;
+using KydlCore.Common;
 using HarmonyLib;
 using UnityEngine;
 using DrainTarPit;

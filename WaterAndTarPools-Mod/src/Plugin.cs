@@ -9,7 +9,7 @@ using Jotunn.Utils;
 using UnityEngine;
 using WaterAndTarPools.Debug;
 using WaterAndTarPools.Drain;
-using Kydl.Common;
+using KydlCore.Common;
 using WaterAndTarPools.Signs;
 using WaterAndTarPools.Visuals;
 
@@ -25,7 +25,7 @@ namespace WaterAndTarPools
     /// </summary>
     [BepInPlugin(ModGuid, ModName, ModVersion)]
     [BepInDependency(Jotunn.Main.ModGuid)]
-    [BepInDependency(KydlCore.Plugin.ModGuid, "0.1.0")]
+    [BepInDependency(KydlCore.Bootstrap.Plugin.ModGuid, "0.1.0")]
     [BepInDependency(DrainTarPit.Plugin.ModGuid, BepInDependency.DependencyFlags.HardDependency)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
     public class Plugin : BaseUnityPlugin

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using BepInEx;
-using Kydl.Common;
+using KydlCore.Common;
 using DrainTarPit;
 using DrainTarPit.Drain;
 using WaterAndTarPools.Ui;

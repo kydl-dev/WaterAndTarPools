@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Globalization;
-using Kydl.Common;
+using KydlCore.Common;
 using UnityEngine;
 using static DrainTarPit.Drain.TarPits;
 using DrainTarPit;

@@ -13,7 +13,7 @@ using WaterAndTarPools.Ui;
 using WaterAndTarPools.Drain;
 using WaterAndTarPools.Visuals;
 using WaterAndTarPools.Signs;
-using Kydl.Common;
+using KydlCore.Common;
 
 namespace WaterAndTarPools.Debug
 {

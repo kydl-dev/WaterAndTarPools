@@ -4,7 +4,7 @@ using DrainTarPit.Drain;
 using WaterAndTarPools.Ui;
 using WaterAndTarPools.Visuals;
 using WaterAndTarPools.Signs;
-using Kydl.Common;
+using KydlCore.Common;
 
 namespace WaterAndTarPools.Drain
 {

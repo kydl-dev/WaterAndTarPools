@@ -3,7 +3,7 @@ using DrainTarPit;
 using DrainTarPit.Drain;
 using UnityEngine;
 using WaterAndTarPools.Drain;
-using Kydl.Common;
+using KydlCore.Common;
 using WaterAndTarPools.Visuals;
 
 namespace WaterAndTarPools
@@ -53,17 +53,17 @@ namespace WaterAndTarPools
         public static bool PoolsOn { get { return On && (PoolsEnable == null || PoolsEnable.Value); } }
 
         // --- fixed values (Tunables) -------------------------------------------------------------------------------------------------
-        public static readonly Kydl.Common.Tunable<WaterStyleOption> WaterStyle = new("Visuals", "WaterStyle", WaterStyleOption.Game,
+        public static readonly KydlCore.Common.Tunable<WaterStyleOption> WaterStyle = new("Visuals", "WaterStyle", WaterStyleOption.Game,
             "Water style of pools when no admin world style and no personal style is set.");
-        public static readonly Kydl.Common.Tunable<bool> PoolMeshFix = new("Visuals", "PoolMeshFix", true,
+        public static readonly KydlCore.Common.Tunable<bool> PoolMeshFix = new("Visuals", "PoolMeshFix", true,
             "Dry grid points near the water are put at the water level (no water sheet hanging on the walls).");
-        public static readonly Kydl.Common.Tunable<int> PoolMeshReach = new("Visuals", "PoolMeshReach", 6,
+        public static readonly KydlCore.Common.Tunable<int> PoolMeshReach = new("Visuals", "PoolMeshReach", 6,
             "PoolMeshFix: how many grid cells away from a wet point a dry point is still put at the water level.");
-        public static readonly Kydl.Common.Tunable<float> SignBoardBrightness = new("Visuals", "SignBoardBrightness", 1.5f,
+        public static readonly KydlCore.Common.Tunable<float> SignBoardBrightness = new("Visuals", "SignBoardBrightness", 1.5f,
             "Pool sign: brightness of the wooden board.");
-        public static readonly Kydl.Common.Tunable<float> SignTextBrightness = new("Visuals", "SignTextBrightness", 1.2f,
+        public static readonly KydlCore.Common.Tunable<float> SignTextBrightness = new("Visuals", "SignTextBrightness", 1.2f,
             "Pool sign: brightness of the name's colours.");
-        public static readonly Kydl.Common.Tunable<float> PoolFilmDepth = new("Pools", "PoolFilmDepth", 0.05f,
+        public static readonly KydlCore.Common.Tunable<float> PoolFilmDepth = new("Pools", "PoolFilmDepth", 0.05f,
             "Depth (m) below which liquid counts as a thin film for PoolShedFilm.");
 
         public static void Bind(ConfigFile c)

@@ -1,4 +1,4 @@
-using Kydl.Common;
+using KydlCore.Common;
 using Jotunn.Configs;
 using Jotunn.Entities;
 using Jotunn.Managers;

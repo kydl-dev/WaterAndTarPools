@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
-using Kydl.Common;
+using KydlCore.Common;
 using WaterAndTarPools.Visuals;
 using HarmonyLib;
 using UnityEngine;

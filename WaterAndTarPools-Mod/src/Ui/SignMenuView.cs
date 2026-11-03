@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-using Kydl.Ui;
+using KydlCore.Ui;
 using WaterAndTarPools.Signs;
 
 namespace WaterAndTarPools.Ui

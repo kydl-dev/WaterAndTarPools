@@ -4,7 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
-using Kydl.Common;
+using KydlCore.Common;
 using WaterAndTarPools.Visuals;
 using HarmonyLib;
 using UnityEngine;

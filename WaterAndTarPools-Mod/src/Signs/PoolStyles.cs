@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using BepInEx;
 
-using Kydl.Common;
+using KydlCore.Common;
 using WaterAndTarPools.Visuals;
 using UnityEngine;
 using DrainTarPit;

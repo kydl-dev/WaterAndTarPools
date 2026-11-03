@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace WaterAndTarPools
 {
-    /// <summary>The player-facing English text of WaterAndTarPools (pool tab, sign menu, sign piece). Keys start with wtp_; registered with Kydl.Common.Loc in Plugin.Awake.</summary>
+    /// <summary>The player-facing English text of WaterAndTarPools (pool tab, sign menu, sign piece). Keys start with wtp_; registered with KydlCore.Common.Loc in Plugin.Awake.</summary>
     internal static class WtpText
     {
         internal static readonly Dictionary<string, string> En = new Dictionary<string, string>

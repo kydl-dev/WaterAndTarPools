@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using Kydl.Common;
-using Kydl.Ui;
+using KydlCore.Common;
+using KydlCore.Ui;
 using WaterAndTarPools.Ui;
 using UnityEngine;
 using DrainTarPit;
@@ -23,7 +23,7 @@ namespace WaterAndTarPools.Signs
 
         readonly PoolSign _sign;
         SignMenuView _view;
-        KydlCore.KyWindow _window;
+        KydlCore.Features.Hub.Contracts.KyWindow _window;
 
         PoolSignMenu(PoolSign sign) { _sign = sign; }
 
@@ -44,7 +44,7 @@ namespace WaterAndTarPools.Signs
             if (_open != null) _open.Close("another sign opened");
             var m = new PoolSignMenu(sign);
             m._view = new SignMenuView(m, sign.SignName, sign.Style);
-            m._window = KydlCore.KyUi.Open(Plugin.ModGuid, WindowId, m._view.Window, () => m.Closed());
+            m._window = KydlCore.Features.Hub.Contracts.KyUi.Open(Plugin.ModGuid, WindowId, m._view.Window, () => m.Closed());
             if (m._window == null) { ModLog.Warn("PoolSignMenu: the window could not be opened (UI not available)"); return 0; }
             _open = m;
             ModLog.Verbose("PoolSignMenu: opened for '" + sign.SignName + "' (pool " + sign.PoolLabel() + ")");

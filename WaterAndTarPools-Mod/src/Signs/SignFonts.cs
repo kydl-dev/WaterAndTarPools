@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Kydl.Common;
+using KydlCore.Common;
 using TMPro;
 using UnityEngine;
 using DrainTarPit;

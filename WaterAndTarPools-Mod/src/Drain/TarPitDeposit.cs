@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Kydl.Common;
+using KydlCore.Common;
 using UnityEngine;
 using static DrainTarPit.Drain.TarPits;
 using static WaterAndTarPools.Drain.TarPitFlood;

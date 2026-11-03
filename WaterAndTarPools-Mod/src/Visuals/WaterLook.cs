@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
-using Kydl.Common;
+using KydlCore.Common;
 using UnityEngine;
 using UnityEngine.Rendering;
 using DrainTarPit;

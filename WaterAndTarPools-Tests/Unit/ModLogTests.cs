@@ -7,13 +7,13 @@ using FsCheck;
 namespace WaterAndTarPools.Tests.Unit
 {
     /// <summary>
-    /// The shared ModLog (Kydl.Common, compiled into the mod): line format, session marker, debug switch and the 2.5 s repeat filter
+    /// The shared ModLog (KydlCore.Common, compiled into the mod): line format, session marker, debug switch and the 2.5 s repeat filter
     /// (user standards). Reached by reflection in the built DLL; the BepInEx logger is real, only a capturing listener is added.
     /// </summary>
     [TestFixture]
     public class ModLogTests
     {
-        const string LogType = "Kydl.Common.ModLog";
+        const string LogType = "KydlCore.Common.ModLog";
         static readonly Regex TimestampedLine = new Regex(@"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3} - (?<msg>.*)$", RegexOptions.Singleline);
 
         sealed class CaptureListener : ILogListener
