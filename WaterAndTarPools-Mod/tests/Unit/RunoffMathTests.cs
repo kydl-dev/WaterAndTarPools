@@ -15,8 +15,11 @@ public class RunoffMathTests
     {
         string why;
 
-        Assert.That(Decide(10f, 5f, false, out why), Is.True);
-        Assert.That(why, Is.Empty);
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(Decide(10f, 5f, false, out why), Is.True);
+            Assert.That(why, Is.Empty);
+        }
     }
 
     [Test]
@@ -24,8 +27,11 @@ public class RunoffMathTests
     {
         string why;
 
-        Assert.That(Decide(20.01f, 5f, false, out why), Is.False);
-        Assert.That(why, Does.Contain("20.0 m").And.Contain("limit 20"));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(Decide(20.01f, 5f, false, out why), Is.False);
+            Assert.That(why, Does.Contain("20.0 m").And.Contain("limit 20"));
+        }
     }
 
     [Test]
@@ -41,9 +47,12 @@ public class RunoffMathTests
     {
         string why;
 
-        Assert.That(Decide(5.25f, 5f, false, out why), Is.False, "within 0.25 m of the previous landing counts as flowing back");
-        Assert.That(why, Does.Contain("flow back"));
-        Assert.That(Decide(5.26f, 5f, false, out why), Is.True);
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(Decide(5.25f, 5f, false, out why), Is.False, "within 0.25 m of the previous landing counts as flowing back");
+            Assert.That(why, Does.Contain("flow back"));
+            Assert.That(Decide(5.26f, 5f, false, out why), Is.True);
+        }
     }
 
     [Test]
@@ -51,8 +60,11 @@ public class RunoffMathTests
     {
         string why;
 
-        Assert.That(Decide(10f, 5f, true, out why), Is.False);
-        Assert.That(why, Does.Contain("sea"));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(Decide(10f, 5f, true, out why), Is.False);
+            Assert.That(why, Does.Contain("sea"));
+        }
     }
 
     [Test]

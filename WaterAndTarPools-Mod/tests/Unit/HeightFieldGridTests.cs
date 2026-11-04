@@ -29,12 +29,15 @@ public class HeightFieldGridTests
 
         var b = HeightField.FindBasin(d, h, W, Cell(4, 4), float.NegativeInfinity);
 
-        Assert.That(b.Rim, Is.EqualTo(1f + HeightField.MinSpillDepth).Within(Eps), "the liquid leaves over the border cells, which carry the lip");
-        Assert.That(b.Floor, Is.EqualTo(0f));
-        Assert.That(b.Low, Is.EqualTo(Cell(4, 4)));
-        Assert.That(b.Depth, Is.EqualTo(1f + HeightField.MinSpillDepth).Within(Eps));
-        Assert.That(b.Enclosed, Is.True);
-        Assert.That(OnBorder(b.RimCell), Is.True, "the rim cell is where the liquid leaves the grid");
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(b.Rim, Is.EqualTo(1f + HeightField.MinSpillDepth).Within(Eps), "the liquid leaves over the border cells, which carry the lip");
+            Assert.That(b.Floor, Is.EqualTo(0f));
+            Assert.That(b.Low, Is.EqualTo(Cell(4, 4)));
+            Assert.That(b.Depth, Is.EqualTo(1f + HeightField.MinSpillDepth).Within(Eps));
+            Assert.That(b.Enclosed, Is.True);
+            Assert.That(OnBorder(b.RimCell), Is.True, "the rim cell is where the liquid leaves the grid");
+        }
     }
 
     [Test]
@@ -44,8 +47,11 @@ public class HeightFieldGridTests
 
         var b = HeightField.FindBasin(d, h, W, Cell(4, 4), float.NegativeInfinity);
 
-        Assert.That(b.Cells, Is.EqualTo(25), "the 5 x 5 interior");
-        Assert.That(b.Inside.Count(x => x), Is.EqualTo(25));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(b.Cells, Is.EqualTo(25), "the 5 x 5 interior");
+            Assert.That(b.Inside.Count(x => x), Is.EqualTo(25));
+        }
         for (int i = 0; i < N; i++) Assert.That(b.Inside[i], Is.EqualTo(!OnBorder(i)), "cell " + (i % Stride) + "," + (i / Stride));
     }
 
@@ -68,10 +74,13 @@ public class HeightFieldGridTests
 
         var b = HeightField.FindBasin(d, h, W, Cell(2, 4), -5f);
 
-        Assert.That(b.Inside[Cell(4, 4)], Is.True);
-        Assert.That(b.Inside[Cell(5, 4)], Is.False, "the solid column itself is never part of the pool");
-        Assert.That(b.Inside[Cell(6, 4)], Is.False, "behind the solid column is not reachable");
-        Assert.That(b.Cells, Is.EqualTo(15), "x 2 to 4, y 2 to 6: only the interior cells on this side of the column");
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(b.Inside[Cell(4, 4)], Is.True);
+            Assert.That(b.Inside[Cell(5, 4)], Is.False, "the solid column itself is never part of the pool");
+            Assert.That(b.Inside[Cell(6, 4)], Is.False, "behind the solid column is not reachable");
+            Assert.That(b.Cells, Is.EqualTo(15), "x 2 to 4, y 2 to 6: only the interior cells on this side of the column");
+        }
     }
 
     [Test]
@@ -103,11 +112,14 @@ public class HeightFieldGridTests
 
         var b = HeightField.FindBasin(d, h, W, Cell(4, 4), float.NegativeInfinity);
 
-        Assert.That(b.Rim, Is.EqualTo(0.4f).Within(Eps), "the liquid leaves through the lowest point of the ring");
-        Assert.That(b.Cells, Is.EqualTo(9), "the 3 x 3 inside the ring; the gap cell itself is at the rim level, not below it");
-        Assert.That(b.Inside[Cell(6, 4)], Is.False);
-        Assert.That(b.Inside[Cell(4, 4)], Is.True);
-        Assert.That(b.Inside[Cell(2, 2)], Is.False, "the ring itself is higher than the level the liquid reaches");
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(b.Rim, Is.EqualTo(0.4f).Within(Eps), "the liquid leaves through the lowest point of the ring");
+            Assert.That(b.Cells, Is.EqualTo(9), "the 3 x 3 inside the ring; the gap cell itself is at the rim level, not below it");
+            Assert.That(b.Inside[Cell(6, 4)], Is.False);
+            Assert.That(b.Inside[Cell(4, 4)], Is.True);
+            Assert.That(b.Inside[Cell(2, 2)], Is.False, "the ring itself is higher than the level the liquid reaches");
+        }
     }
 
     // ------------------------------------------------------------------------------------------------ Descend
@@ -219,8 +231,11 @@ public class HeightFieldGridTests
 
         var r = HeightField.Fill(d, h, W, Cell(sx, sy), 1f, new HeightField.FillOptions { Buried = -5f });
 
-        Assert.That(r.Start, Is.EqualTo(Cell(ex, ey)));
-        Assert.That(r.Unplaced, Is.EqualTo(0f));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(r.Start, Is.EqualTo(Cell(ex, ey)));
+            Assert.That(r.Unplaced, Is.EqualTo(0f));
+        }
     }
 
     [Test]
@@ -230,9 +245,12 @@ public class HeightFieldGridTests
 
         var r = HeightField.Fill(d, h, W, Cell(4, 4), 5f, new HeightField.FillOptions { Buried = -5f });
 
-        Assert.That(r.Unplaced, Is.EqualTo(5f));
-        Assert.That(r.Path, Does.Contain("no reachable cell"));
-        Assert.That(d.Sum(), Is.EqualTo(0f), "nothing was written");
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(r.Unplaced, Is.EqualTo(5f));
+            Assert.That(r.Path, Does.Contain("no reachable cell"));
+            Assert.That(d.Sum(), Is.EqualTo(0f), "nothing was written");
+        }
     }
 
     // ------------------------------------------------------------------------------------------------ walls pushing liquid aside
@@ -249,9 +267,12 @@ public class HeightFieldGridTests
 
         var r = Raise(h, d, new Dictionary<int, float> { { Cell(4, 4), HeightField.WallMinRise } });
 
-        Assert.That(r.Raised, Is.EqualTo(0));
-        Assert.That(h[Cell(4, 4)], Is.EqualTo(0f));
-        Assert.That(d[Cell(4, 4)], Is.EqualTo(1f));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(r.Raised, Is.EqualTo(0));
+            Assert.That(h[Cell(4, 4)], Is.EqualTo(0f));
+            Assert.That(d[Cell(4, 4)], Is.EqualTo(1f));
+        }
     }
 
     [Test]
@@ -271,15 +292,21 @@ public class HeightFieldGridTests
 
         var r = Raise(h, d, new Dictionary<int, float> { { Cell(4, 4), 2f } });
 
-        Assert.That(h[Cell(4, 4)], Is.EqualTo(2f));
-        Assert.That(d[Cell(4, 4)], Is.EqualTo(0f));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(h[Cell(4, 4)], Is.EqualTo(2f));
+            Assert.That(d[Cell(4, 4)], Is.EqualTo(0f));
+        }
         foreach (var n in new[] { Cell(5, 4), Cell(3, 4), Cell(4, 5), Cell(4, 3) }) Assert.That(d[n], Is.EqualTo(0.25f).Within(Eps));
-        Assert.That(r.Raised, Is.EqualTo(1));
-        Assert.That(r.DisplacedCells, Is.EqualTo(1));
-        Assert.That(r.Displaced, Is.EqualTo(1f).Within(Eps));
-        Assert.That(r.KeptCells, Is.EqualTo(0));
-        Assert.That(r.Moved, Is.EqualTo(new[] { Cell(4, 4) }));
-        Assert.That(r.NoOpenNeighbour, Is.EqualTo(0));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(r.Raised, Is.EqualTo(1));
+            Assert.That(r.DisplacedCells, Is.EqualTo(1));
+            Assert.That(r.Displaced, Is.EqualTo(1f).Within(Eps));
+            Assert.That(r.KeptCells, Is.EqualTo(0));
+            Assert.That(r.Moved, Is.EqualTo(new[] { Cell(4, 4) }));
+            Assert.That(r.NoOpenNeighbour, Is.EqualTo(0));
+        }
     }
 
     [Test]
@@ -289,11 +316,14 @@ public class HeightFieldGridTests
 
         var r = Raise(h, d, new Dictionary<int, float> { { Cell(4, 4), 1f } });
 
-        Assert.That(d[Cell(4, 4)], Is.EqualTo(2f).Within(Eps), "3 m of liquid over a 1 m piece: 2 m stay on top of it");
-        Assert.That(r.KeptCells, Is.EqualTo(1));
-        Assert.That(r.KeptDepth, Is.EqualTo(2f).Within(Eps));
-        Assert.That(r.Displaced, Is.EqualTo(1f).Within(Eps), "only the part below the top is displaced");
-        Assert.That(d[Cell(5, 4)], Is.EqualTo(0.25f).Within(Eps));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(d[Cell(4, 4)], Is.EqualTo(2f).Within(Eps), "3 m of liquid over a 1 m piece: 2 m stay on top of it");
+            Assert.That(r.KeptCells, Is.EqualTo(1));
+            Assert.That(r.KeptDepth, Is.EqualTo(2f).Within(Eps));
+            Assert.That(r.Displaced, Is.EqualTo(1f).Within(Eps), "only the part below the top is displaced");
+            Assert.That(d[Cell(5, 4)], Is.EqualTo(0.25f).Within(Eps));
+        }
     }
 
     [Test]
@@ -315,10 +345,13 @@ public class HeightFieldGridTests
 
         var r = Raise(h, d, new Dictionary<int, float> { { Cell(4, 4), 2.01f } }, new Dictionary<int, float> { { Cell(4, 4), 2f } });
 
-        Assert.That(r.Moved, Is.Empty);
-        Assert.That(r.KeptCells, Is.EqualTo(1));
-        Assert.That(r.KeptDepth, Is.EqualTo(1f).Within(Eps), "the liquid stood on that top already");
-        Assert.That(d[Cell(4, 4)], Is.EqualTo(1f).Within(Eps));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(r.Moved, Is.Empty);
+            Assert.That(r.KeptCells, Is.EqualTo(1));
+            Assert.That(r.KeptDepth, Is.EqualTo(1f).Within(Eps), "the liquid stood on that top already");
+            Assert.That(d[Cell(4, 4)], Is.EqualTo(1f).Within(Eps));
+        }
     }
 
     [Test]
@@ -328,10 +361,13 @@ public class HeightFieldGridTests
 
         var r = Raise(h, d, new Dictionary<int, float> { { Cell(4, 4), 2f } });
 
-        Assert.That(r.Raised, Is.EqualTo(1));
-        Assert.That(r.Moved, Is.Empty);
-        Assert.That(r.KeptCells, Is.EqualTo(0));
-        Assert.That(d.Sum(), Is.EqualTo(0f));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(r.Raised, Is.EqualTo(1));
+            Assert.That(r.Moved, Is.Empty);
+            Assert.That(r.KeptCells, Is.EqualTo(0));
+            Assert.That(d.Sum(), Is.EqualTo(0f));
+        }
     }
 
     [Test]
@@ -341,8 +377,11 @@ public class HeightFieldGridTests
 
         var r = Raise(h, d, new Dictionary<int, float> { { Cell(4, 4), 2f } }, null, new List<int> { Cell(4, 4) });
 
-        Assert.That(r.RepeatCells, Is.EqualTo(1));
-        Assert.That(r.RepeatDepth, Is.EqualTo(1f).Within(Eps));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(r.RepeatCells, Is.EqualTo(1));
+            Assert.That(r.RepeatDepth, Is.EqualTo(1f).Within(Eps));
+        }
     }
 
     [Test]
@@ -352,8 +391,11 @@ public class HeightFieldGridTests
 
         var r = Raise(h, d, new Dictionary<int, float> { { Cell(4, 4), 2f } }, null, new List<int> { Cell(2, 2) });
 
-        Assert.That(r.RepeatCells, Is.EqualTo(0));
-        Assert.That(r.RepeatDepth, Is.EqualTo(0f));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(r.RepeatCells, Is.EqualTo(0));
+            Assert.That(r.RepeatDepth, Is.EqualTo(0f));
+        }
     }
 
     [Test]
@@ -367,11 +409,14 @@ public class HeightFieldGridTests
 
         var r = Raise(h, d, raise);
 
-        Assert.That(r.NoOpenNeighbour, Is.EqualTo(1));
-        Assert.That(r.Far, Is.EqualTo(1f).Within(Eps));
-        Assert.That(r.Displaced, Is.EqualTo(1f).Within(Eps));
-        Assert.That(d[Cell(2, 4)], Is.EqualTo(1f).Within(Eps), "walked over the wall cells to the first open cell found");
-        Assert.That(d.Sum(), Is.EqualTo(1f).Within(Eps), "nothing is lost");
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(r.NoOpenNeighbour, Is.EqualTo(1));
+            Assert.That(r.Far, Is.EqualTo(1f).Within(Eps));
+            Assert.That(r.Displaced, Is.EqualTo(1f).Within(Eps));
+            Assert.That(d[Cell(2, 4)], Is.EqualTo(1f).Within(Eps), "walked over the wall cells to the first open cell found");
+            Assert.That(d.Sum(), Is.EqualTo(1f).Within(Eps), "nothing is lost");
+        }
     }
 
     [Test]
@@ -383,9 +428,12 @@ public class HeightFieldGridTests
 
         var r = Raise(h, d, raise);
 
-        Assert.That(r.UnplacedCells, Is.EqualTo(1));
-        Assert.That(r.Unplaced, Is.EqualTo(0.5f).Within(Eps));
-        Assert.That(d[Cell(4, 4)], Is.EqualTo(0.5f).Within(Eps), "liquid is never deleted (W-5)");
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(r.UnplacedCells, Is.EqualTo(1));
+            Assert.That(r.Unplaced, Is.EqualTo(0.5f).Within(Eps));
+            Assert.That(d[Cell(4, 4)], Is.EqualTo(0.5f).Within(Eps), "liquid is never deleted (W-5)");
+        }
     }
 
     [Test]

@@ -15,6 +15,7 @@
     <!-- the liquid rules: a pure file (no Unity / game types) compiled into the tests as well as into the mod -->
     <Compile Include="..\..\src\Core\Functions.cs" Link="Mod\Functions.cs" Condition="'$(KydlQuality)' != 'true'" />
     <Compile Include="..\..\src\Features\WaterAndTarPools\Domain\HeightField.cs" Link="Mod\HeightField.cs" Condition="'$(KydlQuality)' != 'true'" />
+    <Compile Include="..\..\src\Features\WaterAndTarPools\Domain\HeightField.MinHeap.cs" Link="Mod\HeightField.MinHeap.cs" Condition="'$(KydlQuality)' != 'true'" />
     <!-- the pool sign's text style (pure) -->
     <Compile Include="..\..\src\Features\WaterAndTarPools\Infrastructure\Ui\SignStyle.cs" Link="Mod\SignStyle.cs" Condition="'$(KydlQuality)' != 'true'" />
     <Compile Include="..\..\src\Features\WaterAndTarPools\Infrastructure\Drain\RunoffMath.cs" Link="Mod\RunoffMath.cs" Condition="'$(KydlQuality)' != 'true'" />

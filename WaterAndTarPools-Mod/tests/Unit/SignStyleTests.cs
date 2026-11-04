@@ -20,18 +20,24 @@ public class SignStyleTests
         var problems = new List<string>();
         var back = SignStyle.Parse(Full().Serialize(), problems);
 
-        Assert.That(problems, Is.Empty);
-        Assert.That(back.Serialize(), Is.EqualTo(Full().Serialize()));
-        Assert.That(back.Font, Is.EqualTo("Norse|Bold=x"), "separators inside a value are escaped");
-        Assert.That(back.Letters.Count, Is.EqualTo(2));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(problems, Is.Empty);
+            Assert.That(back.Serialize(), Is.EqualTo(Full().Serialize()));
+            Assert.That(back.Font, Is.EqualTo("Norse|Bold=x"), "separators inside a value are escaped");
+            Assert.That(back.Letters, Has.Count.EqualTo(2));
+        }
         Assert.That(back.Letters[3], Is.EqualTo("#00FF00"));
     }
 
     [Test]
     public void Parse_EmptyOrNull_GivesTheDefaultStyle()
     {
-        Assert.That(SignStyle.Parse(null).Serialize(), Is.EqualTo(new SignStyle().Serialize()));
-        Assert.That(SignStyle.Parse("").Serialize(), Is.EqualTo(new SignStyle().Serialize()));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(SignStyle.Parse(null).Serialize(), Is.EqualTo(new SignStyle().Serialize()));
+            Assert.That(SignStyle.Parse("").Serialize(), Is.EqualTo(new SignStyle().Serialize()));
+        }
     }
 
     [Test]
@@ -40,11 +46,17 @@ public class SignStyleTests
         var problems = new List<string>();
         var s = SignStyle.Parse("v1|size=abc|col=#GGGGGG|lc=x:#FF0000,2:nope,4:#0F0|what=1|broken", problems);
 
-        Assert.That(s.Size, Is.EqualTo(0f));
-        Assert.That(s.Color, Is.EqualTo("#FFFFFF"));
-        Assert.That(s.Letters.Count, Is.EqualTo(1));
-        Assert.That(s.Letters[4], Is.EqualTo("#00FF00"), "#rgb short form is read");
-        Assert.That(problems.Count, Is.EqualTo(6));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(s.Size, Is.EqualTo(0f));
+            Assert.That(s.Color, Is.EqualTo("#FFFFFF"));
+            Assert.That(s.Letters, Has.Count.EqualTo(1));
+        }
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(s.Letters[4], Is.EqualTo("#00FF00"), "#rgb short form is read");
+            Assert.That(problems, Has.Count.EqualTo(6));
+        }
     }
 
     [Test]
@@ -52,8 +64,11 @@ public class SignStyleTests
     {
         var problems = new List<string>();
         var s = SignStyle.Parse("size=3", problems);
-        Assert.That(s.Size, Is.EqualTo(0f));
-        Assert.That(problems, Has.Count.EqualTo(1));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(s.Size, Is.EqualTo(0f));
+            Assert.That(problems, Has.Count.EqualTo(1));
+        }
     }
 
     [Test]
@@ -65,20 +80,26 @@ public class SignStyleTests
     [Test]
     public void Clamp_KeepsSizeAndSpacingInRange_ZeroSizeStaysAuto()
     {
-        Assert.That(SignStyle.Parse("v1|size=99|sp=-80").Size, Is.EqualTo(SignStyle.MaxSize));
-        Assert.That(SignStyle.Parse("v1|size=99|sp=-80").Spacing, Is.EqualTo(-20f));
-        Assert.That(SignStyle.Parse("v1|size=0").Size, Is.EqualTo(0f));
-        Assert.That(SignStyle.Parse("v1|size=0.1").Size, Is.EqualTo(SignStyle.MinSize));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(SignStyle.Parse("v1|size=99|sp=-80").Size, Is.EqualTo(SignStyle.MaxSize));
+            Assert.That(SignStyle.Parse("v1|size=99|sp=-80").Spacing, Is.EqualTo(-20f));
+            Assert.That(SignStyle.Parse("v1|size=0").Size, Is.EqualTo(0f));
+            Assert.That(SignStyle.Parse("v1|size=0.1").Size, Is.EqualTo(SignStyle.MinSize));
+        }
     }
 
     [Test]
     public void Hex_AcceptsShortAndLongForms_RejectsTheRest()
     {
-        Assert.That(SignStyle.Hex("abc"), Is.EqualTo("#AABBCC"));
-        Assert.That(SignStyle.Hex("#a1b2c3"), Is.EqualTo("#A1B2C3"));
-        Assert.That(SignStyle.Hex("#12345"), Is.Null);
-        Assert.That(SignStyle.Hex("zzzzzz"), Is.Null);
-        Assert.That(SignStyle.Hex(null), Is.Null);
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(SignStyle.Hex("abc"), Is.EqualTo("#AABBCC"));
+            Assert.That(SignStyle.Hex("#a1b2c3"), Is.EqualTo("#A1B2C3"));
+            Assert.That(SignStyle.Hex("#12345"), Is.Null);
+            Assert.That(SignStyle.Hex("zzzzzz"), Is.Null);
+            Assert.That(SignStyle.Hex(null), Is.Null);
+        }
     }
 
     [Test]
@@ -121,13 +142,16 @@ public class SignStyleTests
     [Test]
     public void IsEmoji_PictographsAndSymbols_AreEmoji_LettersAreNot()
     {
-        Assert.That(SignStyle.IsEmoji("\U0001F41F"), Is.True, "fish");
-        Assert.That(SignStyle.IsEmoji("❤️"), Is.True, "heart with the emoji selector");
-        Assert.That(SignStyle.IsEmoji("⚓"), Is.True, "anchor (dingbat block)");
-        Assert.That(SignStyle.IsEmoji("A"), Is.False);
-        Assert.That(SignStyle.IsEmoji("ä"), Is.False, "a with umlaut");
-        Assert.That(SignStyle.IsEmoji(""), Is.False);
-        Assert.That(SignStyle.IsEmoji(null), Is.False);
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(SignStyle.IsEmoji("\U0001F41F"), Is.True, "fish");
+            Assert.That(SignStyle.IsEmoji("❤️"), Is.True, "heart with the emoji selector");
+            Assert.That(SignStyle.IsEmoji("⚓"), Is.True, "anchor (dingbat block)");
+            Assert.That(SignStyle.IsEmoji("A"), Is.False);
+            Assert.That(SignStyle.IsEmoji("ä"), Is.False, "a with umlaut");
+            Assert.That(SignStyle.IsEmoji(""), Is.False);
+            Assert.That(SignStyle.IsEmoji(null), Is.False);
+        }
     }
 
     [Test]
@@ -136,8 +160,11 @@ public class SignStyleTests
         var s = new SignStyle();
         s.Letters[1] = "#00FF00";
         string r = s.Render("a\U0001F41Fb", "Emo SDF");
-        Assert.That(r, Does.Contain("a<color=#00FF00><font=\"Emo SDF\">\U0001F41F</font></color>b"));
-        Assert.That(s.Render("ab", "Emo SDF"), Does.Not.Contain("<font"));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(r, Does.Contain("a<color=#00FF00><font=\"Emo SDF\">\U0001F41F</font></color>b"));
+            Assert.That(s.Render("ab", "Emo SDF"), Does.Not.Contain("<font"));
+        }
     }
 
     [Test]
@@ -145,11 +172,14 @@ public class SignStyleTests
     {
         var s = new SignStyle();
         int n = s.Gradient(0, 2, "#000000", "#FF0000");
-        Assert.That(n, Is.EqualTo(3));
-        Assert.That(s.Letters[0], Is.EqualTo("#000000"));
-        Assert.That(s.Letters[1], Is.EqualTo("#800000"));
-        Assert.That(s.Letters[2], Is.EqualTo("#FF0000"));
-        Assert.That(s.Gradient(2, 1, "#000000", "#FF0000"), Is.EqualTo(0), "an empty range colours nothing");
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(n, Is.EqualTo(3));
+            Assert.That(s.Letters[0], Is.EqualTo("#000000"));
+            Assert.That(s.Letters[1], Is.EqualTo("#800000"));
+            Assert.That(s.Letters[2], Is.EqualTo("#FF0000"));
+            Assert.That(s.Gradient(2, 1, "#000000", "#FF0000"), Is.EqualTo(0), "an empty range colours nothing");
+        }
     }
 
     [Test]
@@ -158,8 +188,11 @@ public class SignStyleTests
         var a = Full();
         var b = a.Clone();
         b.Letters[0] = "#FFFFFF"; b.Bold = false;
-        Assert.That(a.Letters[0], Is.EqualTo("#FF0000"));
-        Assert.That(a.Bold, Is.EqualTo(true));
-        Assert.That(b.Serialize(), Is.Not.EqualTo(a.Serialize()));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(a.Letters[0], Is.EqualTo("#FF0000"));
+            Assert.That(a.Bold, Is.EqualTo(true));
+            Assert.That(b.Serialize(), Is.Not.EqualTo(a.Serialize()));
+        }
     }
 }

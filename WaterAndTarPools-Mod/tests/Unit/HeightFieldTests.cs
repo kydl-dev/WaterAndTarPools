@@ -64,14 +64,17 @@ public class HeightFieldTests
         var h = Tank(8, 1f); var d = new float[N];
         float cap = Capacity(h, 8, 1f), before = Total(d);
         var r = Pour(d, h, cap * 2f);
-        Assert.That(r.Pool.Enclosed, Is.True);
-        Assert.That(r.Pool.Rim, Is.EqualTo(1f).Within(1e-4));
-        Assert.That(InTank(d, 8), Is.EqualTo(cap).Within(cap * 0.01f), r.Path);
-        Assert.That(d[Cell(0, 0)], Is.EqualTo(1f).Within(0.01f), "level = rim");
-        Assert.That(r.RimRemoved, Is.EqualTo(0f));
-        Assert.That(r.RimCrossings, Is.EqualTo(1));
-        Assert.That(r.Outside + r.ToEdge + r.OverflowRemoved, Is.EqualTo(cap).Within(cap * 0.01f), "the rest went over the rim");
-        Assert.That(Total(d) - before, Is.EqualTo(r.Kept).Within(Eps * cap), "measured = kept");
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(r.Pool.Enclosed, Is.True);
+            Assert.That(r.Pool.Rim, Is.EqualTo(1f).Within(1e-4));
+            Assert.That(InTank(d, 8), Is.EqualTo(cap).Within(cap * 0.01f), r.Path);
+            Assert.That(d[Cell(0, 0)], Is.EqualTo(1f).Within(0.01f), "level = rim");
+            Assert.That(r.RimRemoved, Is.EqualTo(0f));
+            Assert.That(r.RimCrossings, Is.EqualTo(1));
+            Assert.That(r.Outside + r.ToEdge + r.OverflowRemoved, Is.EqualTo(cap).Within(cap * 0.01f), "the rest went over the rim");
+            Assert.That(Total(d) - before, Is.EqualTo(r.Kept).Within(Eps * cap), "measured = kept");
+        }
     }
 
     // ---------------------------------------------------------------- a FULL pool, rim switch off (user, 2026-10-20: 100 m3 strokes into the
@@ -94,13 +97,16 @@ public class HeightFieldTests
         float cap = Capacity(h, 8, 1f);
         Pour(d, h, cap);                                                          // full to the rim
         var r = Pour(d, h, 100f);
-        Assert.That(r.Retained + r.OtherBasins, Is.EqualTo(0f).Within(0.5f), "the pool is full: " + r.Path);
-        Assert.That(InTank(d, 8), Is.EqualTo(cap).Within(cap * 0.01f), "the pool stays full");
-        Assert.That(r.RimCrossings, Is.EqualTo(1), r.Path);
-        Assert.That(r.OverflowRemoved, Is.LessThan(1f), "a 100-unit stream is not a thin film: " + r.Path);
-        Assert.That(r.ToEdge + r.Outside, Is.EqualTo(100f).Within(1f), "it ran over the rim and on downhill: " + r.Path);
-        Assert.That(r.ToEdge, Is.GreaterThan(50f), "most of it leaves at the grid edge (next pool / runoff): " + r.Path);
-        Assert.That(r.RimRemoved, Is.EqualTo(0f));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(r.Retained + r.OtherBasins, Is.EqualTo(0f).Within(0.5f), "the pool is full: " + r.Path);
+            Assert.That(InTank(d, 8), Is.EqualTo(cap).Within(cap * 0.01f), "the pool stays full");
+            Assert.That(r.RimCrossings, Is.EqualTo(1), r.Path);
+            Assert.That(r.OverflowRemoved, Is.LessThan(1f), "a 100-unit stream is not a thin film: " + r.Path);
+            Assert.That(r.ToEdge + r.Outside, Is.EqualTo(100f).Within(1f), "it ran over the rim and on downhill: " + r.Path);
+            Assert.That(r.ToEdge, Is.GreaterThan(50f), "most of it leaves at the grid edge (next pool / runoff): " + r.Path);
+            Assert.That(r.RimRemoved, Is.EqualTo(0f));
+        }
     }
 
     [Test]
@@ -116,10 +122,13 @@ public class HeightFieldTests
         float cap = Capacity(h, 8, 1f);
         Pour(d, h, cap);
         var r = Pour(d, h, 40f);
-        Assert.That(r.Outside, Is.EqualTo(40f).Within(0.5f), "the moat outside the rim catches it: " + r.Path);
-        Assert.That(r.OverflowRemoved + r.ToEdge, Is.EqualTo(0f).Within(0.5f), r.Path);
-        Assert.That(d[Cell(13, 0)], Is.GreaterThan(0.05f), "water stands in the moat");
-        Assert.That(InTank(d, 8), Is.EqualTo(cap).Within(cap * 0.01f));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(r.Outside, Is.EqualTo(40f).Within(0.5f), "the moat outside the rim catches it: " + r.Path);
+            Assert.That(r.OverflowRemoved + r.ToEdge, Is.EqualTo(0f).Within(0.5f), r.Path);
+            Assert.That(d[Cell(13, 0)], Is.GreaterThan(0.05f), "water stands in the moat");
+            Assert.That(InTank(d, 8), Is.EqualTo(cap).Within(cap * 0.01f));
+        }
     }
 
     [Test]
@@ -130,8 +139,11 @@ public class HeightFieldTests
         Pour(d, h, cap);
         float outsideBefore = Total(d) - InTank(d, 8);
         var r = Pour(d, h, 2f);
-        Assert.That(r.OverflowRemoved, Is.EqualTo(2f).Within(0.05f), "2 units over ~1000 flat cells = a film far under 4 cm: " + r.Path);
-        Assert.That(Total(d) - InTank(d, 8) - outsideBefore, Is.EqualTo(0f).Within(Eps), "nothing is written outside");
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(r.OverflowRemoved, Is.EqualTo(2f).Within(0.05f), "2 units over ~1000 flat cells = a film far under 4 cm: " + r.Path);
+            Assert.That(Total(d) - InTank(d, 8) - outsideBefore, Is.EqualTo(0f).Within(Eps), "nothing is written outside");
+        }
     }
 
     [Test]
@@ -141,8 +153,11 @@ public class HeightFieldTests
         float cap = Capacity(h, 8, 1f);
         Pour(d, h, cap, rim: true);
         var r = Pour(d, h, 100f, rim: true);
-        Assert.That(r.RimRemoved, Is.EqualTo(100f).Within(0.5f), r.Path);
-        Assert.That(r.ToEdge + r.Outside + r.OverflowRemoved, Is.EqualTo(0f).Within(Eps));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(r.RimRemoved, Is.EqualTo(100f).Within(0.5f), r.Path);
+            Assert.That(r.ToEdge + r.Outside + r.OverflowRemoved, Is.EqualTo(0f).Within(Eps));
+        }
     }
 
     [Test]
@@ -151,10 +166,13 @@ public class HeightFieldTests
         var h = Tank(8, 1f); var d = new float[N];
         float cap = Capacity(h, 8, 1f);
         var r = Pour(d, h, cap * 2f, rim: true);
-        Assert.That(InTank(d, 8), Is.EqualTo(cap).Within(cap * 0.01f));
-        Assert.That(r.RimRemoved, Is.EqualTo(cap).Within(cap * 0.01f));
-        Assert.That(r.OverflowRemoved + r.ToEdge + r.Outside, Is.EqualTo(0f).Within(Eps), "nothing goes over the rim");
-        Assert.That(Total(d), Is.EqualTo(InTank(d, 8)).Within(Eps), "no liquid outside the tank");
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(InTank(d, 8), Is.EqualTo(cap).Within(cap * 0.01f));
+            Assert.That(r.RimRemoved, Is.EqualTo(cap).Within(cap * 0.01f));
+            Assert.That(r.OverflowRemoved + r.ToEdge + r.Outside, Is.EqualTo(0f).Within(Eps), "nothing goes over the rim");
+            Assert.That(Total(d), Is.EqualTo(InTank(d, 8)).Within(Eps), "no liquid outside the tank");
+        }
     }
 
     [Test]
@@ -169,8 +187,11 @@ public class HeightFieldTests
         {
             float vol = cap * 0.04f; poured += vol;
             var r = Pour(d, h, vol, at: Cell(k % 5 - 2, k % 3 - 1));
-            Assert.That(r.Kept, Is.EqualTo(vol).Within(vol * 1e-3f), "stroke " + k + ": " + r.Path);
-            Assert.That(r.OverflowRemoved + r.Unplaced + r.ToEdge + r.RimRemoved, Is.EqualTo(0f).Within(Eps), "stroke " + k);
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(r.Kept, Is.EqualTo(vol).Within(vol * 1e-3f), "stroke " + k + ": " + r.Path);
+                Assert.That(r.OverflowRemoved + r.Unplaced + r.ToEdge + r.RimRemoved, Is.EqualTo(0f).Within(Eps), "stroke " + k);
+            }
         }
         Assert.That(InTank(d, 12), Is.EqualTo(poured).Within(poured * 1e-3f));
     }
@@ -183,9 +204,12 @@ public class HeightFieldTests
         var d = new float[N];
         float leftCap = 12 * 25 * 0.03f;            // the left half up to the lip; the 30 % over it spreads 9 mm thin over the right half
         var r = Pour(d, h, leftCap * 1.3f, at: Cell(-6, 0));
-        Assert.That(r.OverflowRemoved, Is.EqualTo(0f), r.Path);
-        Assert.That(r.Kept, Is.EqualTo(leftCap * 1.3f).Within(Eps));
-        Assert.That(r.OtherBasins, Is.GreaterThan(0f), "the part behind the lip is booked as an inner basin");
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(r.OverflowRemoved, Is.EqualTo(0f), r.Path);
+            Assert.That(r.Kept, Is.EqualTo(leftCap * 1.3f).Within(Eps));
+            Assert.That(r.OtherBasins, Is.GreaterThan(0f), "the part behind the lip is booked as an inner basin");
+        }
     }
 
     [Test]
@@ -197,9 +221,12 @@ public class HeightFieldTests
         var small = Pour(d, h, capGap * 0.5f);
         Assert.That(small.Kept, Is.EqualTo(capGap * 0.5f).Within(Eps), "below the gap nothing leaves");
         var r = Pour(d, h, capGap * 2f);
-        Assert.That(r.Pool.Rim, Is.EqualTo(0.4f).Within(1e-3), "the gap is the rim");
-        Assert.That(InTank(d, 8), Is.EqualTo(capGap).Within(capGap * 0.01f));
-        Assert.That(d[Cell(0, 0)], Is.EqualTo(0.4f).Within(0.01f), "level at the gap bottom, not the wall top");
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(r.Pool.Rim, Is.EqualTo(0.4f).Within(1e-3), "the gap is the rim");
+            Assert.That(InTank(d, 8), Is.EqualTo(capGap).Within(capGap * 0.01f));
+            Assert.That(d[Cell(0, 0)], Is.EqualTo(0.4f).Within(0.01f), "level at the gap bottom, not the wall top");
+        }
     }
 
     [Test]
@@ -214,8 +241,11 @@ public class HeightFieldTests
         });
         var d = new float[N];
         var r = Pour(d, h, Capacity(h, 8, 1f));
-        Assert.That(r.Pool.Rim, Is.EqualTo(0.5f).Within(1e-3));
-        Assert.That(d[Cell(0, 0)], Is.EqualTo(0.5f).Within(0.01f));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(r.Pool.Rim, Is.EqualTo(0.5f).Within(1e-3));
+            Assert.That(d[Cell(0, 0)], Is.EqualTo(0.5f).Within(0.01f));
+        }
     }
 
     // ---------------------------------------------------------------- obstacles are only height (W-4, Q16, step 12)
@@ -232,9 +262,12 @@ public class HeightFieldTests
         });
         var d = new float[N];
         var r = Pour(d, h, 100f, rim: true);
-        Assert.That(r.Pool.Enclosed, Is.False, r.Path);
-        Assert.That(r.RimRemoved, Is.EqualTo(0f), "not enclosed: there is no rim to remove liquid at");
-        Assert.That(InTank(d, 8), Is.LessThan(100f * 0.15f));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(r.Pool.Enclosed, Is.False, r.Path);
+            Assert.That(r.RimRemoved, Is.EqualTo(0f), "not enclosed: there is no rim to remove liquid at");
+            Assert.That(InTank(d, 8), Is.LessThan(100f * 0.15f));
+        }
     }
 
     [Test]
@@ -243,8 +276,11 @@ public class HeightFieldTests
         var h = Tank(8, 1f);                            // pillars that touch = a closed ring of the same height
         var d = new float[N];
         var r = Pour(d, h, 50f);
-        Assert.That(r.Pool.Enclosed, Is.True);
-        Assert.That(r.Kept, Is.EqualTo(50f).Within(Eps));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(r.Pool.Enclosed, Is.True);
+            Assert.That(r.Kept, Is.EqualTo(50f).Within(Eps));
+        }
     }
 
     [Test]
@@ -255,8 +291,11 @@ public class HeightFieldTests
         for (int dy = -1; dy <= 1; dy++) for (int dx = 4; dx <= 6; dx++) h[Cell(dx, dy)] = 1f;
         var d = new float[N];
         var r = Pour(d, h, 40f, rim: true);
-        Assert.That(r.Pool.Enclosed, Is.False);
-        Assert.That(r.RimRemoved, Is.EqualTo(0f));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(r.Pool.Enclosed, Is.False);
+            Assert.That(r.RimRemoved, Is.EqualTo(0f));
+        }
         for (int dy = -1; dy <= 1; dy++) for (int dx = 4; dx <= 6; dx++) Assert.That(d[Cell(dx, dy)], Is.EqualTo(0f), "no liquid on the pillar");
         Assert.That(r.ToEdge + r.OverflowRemoved, Is.GreaterThan(30f), "it runs downhill past the pillar: " + r.Path);
     }
@@ -330,9 +369,12 @@ public class HeightFieldTests
     {
         float[] h; var d = Flat(0.8f, out h); float before = Total(d);
         var r = HeightField.RaiseCells(h, d, W, Block(1, 1.5f), null, null);
-        Assert.That(Total(d), Is.EqualTo(before).Within(Eps));
-        Assert.That(r.Displaced, Is.EqualTo(9 * 0.8f).Within(Eps));
-        Assert.That(d[Cell(0, 0)], Is.EqualTo(0f));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(Total(d), Is.EqualTo(before).Within(Eps));
+            Assert.That(r.Displaced, Is.EqualTo(9 * 0.8f).Within(Eps));
+            Assert.That(d[Cell(0, 0)], Is.EqualTo(0f));
+        }
     }
 
     [Test]
@@ -340,10 +382,13 @@ public class HeightFieldTests
     {
         float[] h; var d = Flat(0.8f, out h); float before = Total(d);
         var r = HeightField.RaiseCells(h, d, W, Block(4, 1.5f), null, null);
-        Assert.That(Total(d), Is.EqualTo(before).Within(Eps));
-        Assert.That(r.NoOpenNeighbour, Is.GreaterThan(0));
-        Assert.That(r.Far, Is.GreaterThan(0f));
-        Assert.That(r.Unplaced, Is.EqualTo(0f));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(Total(d), Is.EqualTo(before).Within(Eps));
+            Assert.That(r.NoOpenNeighbour, Is.GreaterThan(0));
+            Assert.That(r.Far, Is.GreaterThan(0f));
+            Assert.That(r.Unplaced, Is.EqualTo(0f));
+        }
     }
 
     [Test]
@@ -351,9 +396,12 @@ public class HeightFieldTests
     {
         float[] h; var d = Flat(0.8f, out h); float before = Total(d);
         var r = HeightField.RaiseCells(h, d, W, Block(4, 0.3f), null, null);
-        Assert.That(Total(d), Is.EqualTo(before).Within(Eps));
-        Assert.That(d[Cell(0, 0)], Is.EqualTo(0.5f).Within(1e-4), "surface stays at 0.8");
-        Assert.That(r.Displaced, Is.EqualTo(81 * 0.3f).Within(Eps), "only the piece's own volume moves");
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(Total(d), Is.EqualTo(before).Within(Eps));
+            Assert.That(d[Cell(0, 0)], Is.EqualTo(0.5f).Within(1e-4), "surface stays at 0.8");
+            Assert.That(r.Displaced, Is.EqualTo(81 * 0.3f).Within(Eps), "only the piece's own volume moves");
+        }
     }
 
     [Test]
@@ -362,8 +410,11 @@ public class HeightFieldTests
         float[] h; var d = Flat(0.8f, out h); float before = Total(d);
         var all = new Dictionary<int, float>(); for (int i = 0; i < N; i++) all[i] = 2f;
         var r = HeightField.RaiseCells(h, d, W, all, null, null);
-        Assert.That(Total(d), Is.EqualTo(before).Within(Eps), "never deleted (W-5)");
-        Assert.That(r.Unplaced, Is.EqualTo(before).Within(before * 1e-4f), "float sum of 1681 cells");
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(Total(d), Is.EqualTo(before).Within(Eps), "never deleted (W-5)");
+            Assert.That(r.Unplaced, Is.EqualTo(before).Within(before * 1e-4f), "float sum of 1681 cells");
+        }
     }
 
     [Test]
@@ -380,9 +431,12 @@ public class HeightFieldTests
             foreach (var kv in block) h[kv.Key] = 0f;
             float before = Total(d);
             var r = HeightField.RaiseCells(h, d, W, block, block, moved);
-            Assert.That(r.Displaced, Is.EqualTo(0f), "pass " + pass);
-            Assert.That(r.RepeatCells, Is.EqualTo(0));
-            Assert.That(Total(d), Is.EqualTo(before).Within(Eps));
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(r.Displaced, Is.EqualTo(0f), "pass " + pass);
+                Assert.That(r.RepeatCells, Is.EqualTo(0));
+                Assert.That(Total(d), Is.EqualTo(before).Within(Eps));
+            }
             moved = new HashSet<int>(r.Moved);
         }
     }
