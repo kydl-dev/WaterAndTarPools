@@ -2,7 +2,7 @@
 
 ## 2.0.0
 
-- Ported to the KydlDev layout (feature folder, Bootstrap/Configuration/Integrations folders, all Harmony patches in one place, KydlCore feature registry, a **Settings** tab in the KY hub with every config entry). Not tested in game yet; the automated tests pass.
+- Ported to the KydlDev layout (feature folder, Bootstrap/Configuration/Integrations folders, all Harmony patches in one place, KydlCore feature registry, a **Settings** tab in the KY hub with every config entry). Checked in game on 2026-11-04 (clean start and quit with all mods loaded, no errors from this mod); the automated tests pass.
 - Network compatibility is now checked down to the patch version (was minor). Needs DrainTarPit 2.0.0.
 - Breaking: needs the KydlCore mod (hard dependency; the mod manager installs it).
 - The pool menu moved from its own window (F9) into the **Pools** tab of the KY hub (F6): the world water style for admins, every named pool with its position and closest portal, and your own water style per pool. The `[Visuals] PoolMenuKey` setting is gone.
