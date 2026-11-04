@@ -57,13 +57,13 @@ internal static class ModSettings
         "Water style of pools when no admin world style and no personal style is set.");
     public static readonly KydlCore.Common.Tunable<bool> PoolMeshFix = new("Visuals", "PoolMeshFix", true,
         "Dry grid points near the water are put at the water level (no water sheet hanging on the walls).");
-    public static readonly KydlCore.Common.Tunable<int> PoolMeshReach = new("Visuals", "PoolMeshReach", 6,
+    public static readonly KydlCore.Common.Tunable<int> PoolMeshReach = new("Visuals", "PoolMeshReach", 6, 1, 20,
         "PoolMeshFix: how many grid cells away from a wet point a dry point is still put at the water level.");
-    public static readonly KydlCore.Common.Tunable<float> SignBoardBrightness = new("Visuals", "SignBoardBrightness", 1.5f,
+    public static readonly KydlCore.Common.Tunable<float> SignBoardBrightness = new("Visuals", "SignBoardBrightness", 1.5f, 0.1f, 4f,
         "Pool sign: brightness of the wooden board.");
-    public static readonly KydlCore.Common.Tunable<float> SignTextBrightness = new("Visuals", "SignTextBrightness", 1.2f,
+    public static readonly KydlCore.Common.Tunable<float> SignTextBrightness = new("Visuals", "SignTextBrightness", 1.2f, 0.1f, 4f,
         "Pool sign: brightness of the name's colours.");
-    public static readonly KydlCore.Common.Tunable<float> PoolFilmDepth = new("Pools", "PoolFilmDepth", 0.05f,
+    public static readonly KydlCore.Common.Tunable<float> PoolFilmDepth = new("Pools", "PoolFilmDepth", 0.05f, 0f, 1f,
         "Depth (m) below which liquid counts as a thin film for PoolShedFilm.");
 
     public static void Bind(ConfigFile c)
