@@ -112,3 +112,6 @@ CLAUDE.md
 
 # SonarQube scanner work files (H30/H31)
 **/tests/_quality/sonar-coverage/
+
+# test-quality output (coverage, Stryker): rebuilt by _agent/tools/test-quality.ps1
+/*-Mod/release/

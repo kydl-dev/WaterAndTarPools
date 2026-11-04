@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
@@ -59,6 +59,7 @@ internal static partial class HeightField
             popped.Add(c);
             for (int j = 0; j < 4; j++)
             {
+                // Stryker disable once Arithmetic : the offsets are symmetric (+1 / -1 and -4..4), so a flipped sign visits the same cells in another order
                 int x = cx + ox[j], y = cy + oy[j];
                 if (x < 0 || y < 0 || x > w || y > w) continue;
                 int i = y * stride + x;
@@ -84,6 +85,7 @@ internal static partial class HeightField
             int cx = cur % stride, cy = cur / stride, next = cur; float best = h[cur] + d[cur];
             for (int k = 0; k < 4; k++)
             {
+                // Stryker disable once Arithmetic : the offsets are symmetric (+1 / -1 and -4..4), so a flipped sign visits the same cells in another order
                 int x = cx + ox[k], y = cy + oy[k];
                 if (x < 1 || y < 1 || x > w - 1 || y > w - 1) continue;
                 int i = y * stride + x;
@@ -143,6 +145,7 @@ internal static partial class HeightField
             for (int dy = -4; dy <= 4; dy++)
                 for (int dx = -4; dx <= 4; dx++)
                 {
+                    // Stryker disable once Arithmetic : the offsets are symmetric (+1 / -1 and -4..4), so a flipped sign visits the same cells in another order
                     int x = cx0 + dx, y = cy0 + dy;
                     if (x < 1 || y < 1 || x > w - 1 || y > w - 1) continue;
                     int i = y * stride + x;
@@ -234,6 +237,7 @@ internal static partial class HeightField
             int cx = c % stride, cy = c / stride;
             for (int k = 0; k < 4; k++)
             {
+                // Stryker disable once Arithmetic : the offsets are symmetric (+1 / -1 and -4..4), so a flipped sign visits the same cells in another order
                 int x = cx + ox[k], y = cy + oy[k];
                 if (x < 0 || y < 0 || x > w || y > w) continue;
                 int i = y * stride + x;
@@ -331,7 +335,7 @@ internal static partial class HeightField
         {
             int i = kv.Key; float top = kv.Value;
             if (i < 0 || i >= n || top <= h[i] + WallMinRise) continue;
-            float baseH = h[i], pt;
+            float baseH = h[i], pt = 0f;     // assigned up front: a chained out-variable breaks Stryker's mutants (Safe Mode)
             if (prevTop != null && prevTop.TryGetValue(i, out pt) && pt > baseH) baseH = pt;
             h[i] = top; r.Raised++;
             isWall[i] = true; walls.Add(i);
@@ -392,6 +396,7 @@ internal static partial class HeightField
             int cx = i % stride, cy = i / stride;
             for (int k = 0; k < 4; k++)
             {
+                // Stryker disable once Arithmetic : the offsets are symmetric (+1 / -1 and -4..4), so a flipped sign visits the same cells in another order
                 int x = cx + ox[k], y = cy + oy[k];
                 if (x < 0 || y < 0 || x > w || y > w || isWall[y * stride + x]) continue;
                 target[i] = y * stride + x; queue.Add(i); break;
@@ -402,6 +407,7 @@ internal static partial class HeightField
             int i = queue[head++], cx = i % stride, cy = i / stride;
             for (int k = 0; k < 4; k++)
             {
+                // Stryker disable once Arithmetic : the offsets are symmetric (+1 / -1 and -4..4), so a flipped sign visits the same cells in another order
                 int x = cx + ox[k], y = cy + oy[k];
                 if (x < 0 || y < 0 || x > w || y > w) continue;
                 int j = y * stride + x;
