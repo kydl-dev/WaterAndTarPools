@@ -26,7 +26,7 @@ namespace WaterAndTarPools;
 /// </summary>
 [BepInPlugin(ModGuid, ModName, ModVersion)]
 [BepInDependency(Jotunn.Main.ModGuid)]
-[BepInDependency(KydlCore.Bootstrap.Plugin.ModGuid, "0.1.0")]
+[BepInDependency(KydlCore.Bootstrap.Plugin.ModGuid, "1.0.0")]
 [BepInDependency(DrainTarPit.Plugin.ModGuid, BepInDependency.DependencyFlags.HardDependency)]
 [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Patch)]
 public class Plugin : BaseUnityPlugin

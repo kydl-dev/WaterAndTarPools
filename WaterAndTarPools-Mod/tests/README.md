@@ -10,5 +10,5 @@
 
 Build the mod first (the tests read `assets\WaterAndTarPools.dll`). Lab runs: never build while the game runs; read `Claude\lessons\TESTLAB_PLAYBOOK.md`
 and the current lab docs (`%APPDATA%\com.kesomannen.gale\valheim\profiles\test\BepInEx\config\DrakesTestLab\docs`). Every run is archived in
-`E:\Projects\Valheim\_testlab\` (results + DLL hashes) and gets a TESTLOG line. Release: 3 green runs of this DLL + 1 ecosystem run (G16).
+`<workspace>\_testlab\` (results + DLL hashes) and gets a TESTLOG line. Release: 3 green runs of this DLL + 1 ecosystem run (G16).
 Everything in this folder stays out of the release zip.

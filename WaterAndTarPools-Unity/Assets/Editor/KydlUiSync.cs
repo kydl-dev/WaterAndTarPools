@@ -1,5 +1,5 @@
 // Editor-only. Keeps Assets/Kydl.Ui an exact copy of the shared UI kit of all the user's mods
-// (E:\Projects\Valheim\KydlCore\KydlCore-Mod\src\Shared\Ui), so the Unity preview shows the same look the mod gets when it is built
+// (<workspace>\KydlCore\KydlCore-Mod\src\Shared\Ui), so the Unity preview shows the same look the mod gets when it is built
 // (the mod gets the same code through KydlCore.dll).
 //
 //  * Runs when the Editor loads / recompiles and from the menu "Kydl > Sync shared UI kit".
@@ -13,7 +13,7 @@ namespace WaterAndTarPools.EditorTools
     [InitializeOnLoad]
     public static class KydlUiSync
     {
-        // <Main>/<Project>-Unity -> <Main> -> E:\Projects\Valheim -> KydlCore\KydlCore-Mod\src\Shared\Ui
+        // <Main>/<Project>-Unity -> <Main> -> <workspace> -> KydlCore\KydlCore-Mod\src\Shared\Ui
         private const string SharedRelative = "../../KydlCore/KydlCore-Mod/src/Shared/Ui";
         private const string TargetRelative = "Assets/Kydl.Ui";
 
