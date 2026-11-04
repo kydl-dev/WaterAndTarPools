@@ -1,0 +1,126 @@
+{
+    "name":  "feature-toggle",
+    "description":  "EnableAll off stops the feature; it stops when all three section switches are off and starts again with one; the hub tabs stay",
+    "timeout":  90,
+    "steps":  [
+                  {
+                      "do":  "hook",
+                      "name":  "waterandtarpools.arena",
+                      "label":  "start on the arena spot",
+                      "contains":  "arena at"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "waterandtarpools.featureRunning",
+                      "args":  {
+                                   "id":  "waterandtarpools"
+                               },
+                      "expect":  true
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "waterandtarpools.tabRegistered",
+                      "args":  {
+                                   "id":  "settings"
+                               },
+                      "label":  "settings tab registered",
+                      "expect":  true
+                  },
+                  {
+                      "do":  "setConfig",
+                      "values":  {
+                                     "Pools/Enable":  false,
+                                     "Effects/Enable":  false,
+                                     "Visuals/Enable":  false
+                                 }
+                  },
+                  {
+                      "do":  "wait",
+                      "until":  {
+                                    "check":  "hook",
+                                    "name":  "waterandtarpools.featureRunning",
+                                    "args":  {
+                                                 "id":  "waterandtarpools"
+                                             },
+                                    "expect":  false
+                                },
+                      "timeout":  5
+                  },
+                  {
+                      "do":  "setConfig",
+                      "values":  {
+                                     "Pools/Enable":  true
+                                 }
+                  },
+                  {
+                      "do":  "wait",
+                      "until":  {
+                                    "check":  "hook",
+                                    "name":  "waterandtarpools.featureRunning",
+                                    "args":  {
+                                                 "id":  "waterandtarpools"
+                                             },
+                                    "expect":  true
+                                },
+                      "timeout":  5
+                  },
+                  {
+                      "do":  "setConfig",
+                      "values":  {
+                                     "Effects/Enable":  true,
+                                     "Visuals/Enable":  true
+                                 }
+                  },
+                  {
+                      "do":  "setConfig",
+                      "values":  {
+                                     "General/EnableAll":  false
+                                 }
+                  },
+                  {
+                      "do":  "wait",
+                      "until":  {
+                                    "check":  "hook",
+                                    "name":  "waterandtarpools.featureRunning",
+                                    "args":  {
+                                                 "id":  "waterandtarpools"
+                                             },
+                                    "expect":  false
+                                },
+                      "timeout":  5
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "waterandtarpools.tabRegistered",
+                      "args":  {
+                                   "id":  "settings"
+                               },
+                      "label":  "settings tab stays",
+                      "expect":  true
+                  },
+                  {
+                      "do":  "setConfig",
+                      "values":  {
+                                     "General/EnableAll":  true
+                                 }
+                  },
+                  {
+                      "do":  "wait",
+                      "until":  {
+                                    "check":  "hook",
+                                    "name":  "waterandtarpools.featureRunning",
+                                    "args":  {
+                                                 "id":  "waterandtarpools"
+                                             },
+                                    "expect":  true
+                                },
+                      "timeout":  5
+                  }
+              ],
+    "asserts":  [
+                    {
+                        "check":  "noErrors",
+                        "source":  "WaterAndTarPools"
+                    }
+                ]
+}

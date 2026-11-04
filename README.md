@@ -40,10 +40,10 @@ Press **F6** to open the KY hub, the one menu of all KydlDev mods, and pick **Wa
 |---|---|
 | General | `EnableAll` - switch the mod off while playing (pools stay), `DepositTar`, `DepositWater` |
 | DebugLog | `Enable` - detailed log lines for bug reports |
-| Effects | `EffectsVolume` (water splash), `WaterSplashSound`, `WaterSlugFlow` (water visible in see-through hoses) |
-| Pools | `MinWaterDepth`, `PoolWalls`, `PoolRimDisappear`, `PoolOverflow`, `PoolRunoff`, `PoolShedFilm`, `PoolFilmEvaporates`, `PoolFishStayIn`, `PoolJumpBoost`, `PoolJumpPresses`, `PoolJumpHeight`, `WaterPoolSize`, `LiquidCellSize`, `WaterFlow` |
-| Visuals | `WaterDepthLook` (Game style only) |
+| Effects | `Enable` (all effects and sounds), `EffectsVolume` (water splash), `WaterSplashSound`, `WaterSlugFlow` (water visible in see-through hoses) |
+| Pools | `Enable` (the pools themselves), `MinWaterDepth`, `PoolWalls`, `PoolRimDisappear`, `PoolOverflow`, `PoolRunoff`, `PoolShedFilm`, `PoolFilmEvaporates`, `PoolFishStayIn`, `PoolJumpBoost`, `PoolJumpPresses`, `PoolJumpHeight`, `WaterPoolSize`, `LiquidCellSize`, `WaterFlow` |
+| Visuals | `Enable`, `WaterDepthLook` (Game style only) |
 
 ## Requirements
 
-DrainTarPit, KydlCore (the F6 hub and the shared UI), BepInEx and Jotunn. **Everyone on the server needs the mod.** English only.
+DrainTarPit, KydlCore (the F6 hub and the shared UI), BepInEx and Jotunn. **Everyone on the server needs the mod, with the same version (the network check compares major, minor and patch).** English only.

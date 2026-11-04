@@ -1,0 +1,64 @@
+{
+    "name":  "hub-page",
+    "description":  "The mod is listed in the KY hub with its Pools and Settings tabs, the hub opens on the Pools tab and the page builds",
+    "timeout":  60,
+    "steps":  [
+                  {
+                      "do":  "hook",
+                      "name":  "waterandtarpools.arena",
+                      "label":  "start on the arena spot",
+                      "contains":  "arena at"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "kc.hubOpen",
+                      "args":  {
+                                   "mod":  "com.kydldev.WaterAndTarPools",
+                                   "tab":  "pools"
+                               },
+                      "expect":  true
+                  },
+                  {
+                      "do":  "wait",
+                      "seconds":  1
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "kc.hubMods",
+                      "contains":  "com.kydldev.WaterAndTarPools"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "kc.hubTabs",
+                      "args":  {
+                                   "mod":  "com.kydldev.WaterAndTarPools"
+                               },
+                      "contains":  "pools",
+                      "label":  "pools tab"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "kc.hubTabs",
+                      "args":  {
+                                   "mod":  "com.kydldev.WaterAndTarPools"
+                               },
+                      "contains":  "settings",
+                      "label":  "settings tab"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "waterandtarpools.poolsPage",
+                      "contains":  "pools"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "kc.hubClose"
+                  }
+              ],
+    "asserts":  [
+                    {
+                        "check":  "noErrors",
+                        "source":  "WaterAndTarPools"
+                    }
+                ]
+}

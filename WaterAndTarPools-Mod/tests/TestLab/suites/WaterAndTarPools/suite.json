@@ -1,0 +1,176 @@
+{
+    "name":  "WaterAndTarPools",
+    "description":  "WaterAndTarPools: starts clean, it is listed in the KY hub with its Pools and Settings tabs, the feature follows EnableAll and the section switches (KydlCore D-084: every mod ships a suite)",
+    "requireMods":  [
+                        {
+                            "guid":  "com.kydldev.WaterAndTarPools",
+                            "minVersion":  "2.0.0"
+                        },
+                        {
+                            "guid":  "com.kydldev.DrainTarPit",
+                            "minVersion":  "2.0.0"
+                        },
+                        {
+                            "guid":  "com.kydldev.KydlCore",
+                            "minVersion":  "0.1.0"
+                        }
+                    ],
+    "configOverrides":  [
+                            {
+                                "guid":  "com.kydldev.WaterAndTarPools",
+                                "section":  "General",
+                                "key":  "EnableAll",
+                                "value":  "true"
+                            },
+                            {
+                                "guid":  "com.kydldev.WaterAndTarPools",
+                                "section":  "General",
+                                "key":  "DepositTar",
+                                "value":  "true"
+                            },
+                            {
+                                "guid":  "com.kydldev.WaterAndTarPools",
+                                "section":  "General",
+                                "key":  "DepositWater",
+                                "value":  "true"
+                            },
+                            {
+                                "guid":  "com.kydldev.WaterAndTarPools",
+                                "section":  "DebugLog",
+                                "key":  "Enable",
+                                "value":  "true"
+                            },
+                            {
+                                "guid":  "com.kydldev.WaterAndTarPools",
+                                "section":  "Effects",
+                                "key":  "Enable",
+                                "value":  "true"
+                            },
+                            {
+                                "guid":  "com.kydldev.WaterAndTarPools",
+                                "section":  "Effects",
+                                "key":  "EffectsVolume",
+                                "value":  "0.6"
+                            },
+                            {
+                                "guid":  "com.kydldev.WaterAndTarPools",
+                                "section":  "Effects",
+                                "key":  "WaterSplashSound",
+                                "value":  "true"
+                            },
+                            {
+                                "guid":  "com.kydldev.WaterAndTarPools",
+                                "section":  "Effects",
+                                "key":  "WaterSlugFlow",
+                                "value":  "true"
+                            },
+                            {
+                                "guid":  "com.kydldev.WaterAndTarPools",
+                                "section":  "Pools",
+                                "key":  "Enable",
+                                "value":  "true"
+                            },
+                            {
+                                "guid":  "com.kydldev.WaterAndTarPools",
+                                "section":  "Pools",
+                                "key":  "MinWaterDepth",
+                                "value":  "0.3"
+                            },
+                            {
+                                "guid":  "com.kydldev.WaterAndTarPools",
+                                "section":  "Pools",
+                                "key":  "PoolWalls",
+                                "value":  "true"
+                            },
+                            {
+                                "guid":  "com.kydldev.WaterAndTarPools",
+                                "section":  "Pools",
+                                "key":  "PoolRimDisappear",
+                                "value":  "true"
+                            },
+                            {
+                                "guid":  "com.kydldev.WaterAndTarPools",
+                                "section":  "Pools",
+                                "key":  "PoolOverflow",
+                                "value":  "true"
+                            },
+                            {
+                                "guid":  "com.kydldev.WaterAndTarPools",
+                                "section":  "Pools",
+                                "key":  "PoolRunoff",
+                                "value":  "true"
+                            },
+                            {
+                                "guid":  "com.kydldev.WaterAndTarPools",
+                                "section":  "Pools",
+                                "key":  "PoolShedFilm",
+                                "value":  "true"
+                            },
+                            {
+                                "guid":  "com.kydldev.WaterAndTarPools",
+                                "section":  "Pools",
+                                "key":  "PoolFilmEvaporates",
+                                "value":  "true"
+                            },
+                            {
+                                "guid":  "com.kydldev.WaterAndTarPools",
+                                "section":  "Pools",
+                                "key":  "PoolFishStayIn",
+                                "value":  "true"
+                            },
+                            {
+                                "guid":  "com.kydldev.WaterAndTarPools",
+                                "section":  "Pools",
+                                "key":  "PoolJumpBoost",
+                                "value":  "true"
+                            },
+                            {
+                                "guid":  "com.kydldev.WaterAndTarPools",
+                                "section":  "Pools",
+                                "key":  "PoolJumpPresses",
+                                "value":  "3"
+                            },
+                            {
+                                "guid":  "com.kydldev.WaterAndTarPools",
+                                "section":  "Pools",
+                                "key":  "PoolJumpHeight",
+                                "value":  "2"
+                            },
+                            {
+                                "guid":  "com.kydldev.WaterAndTarPools",
+                                "section":  "Pools",
+                                "key":  "WaterPoolSize",
+                                "value":  "24"
+                            },
+                            {
+                                "guid":  "com.kydldev.WaterAndTarPools",
+                                "section":  "Pools",
+                                "key":  "LiquidCellSize",
+                                "value":  "0.25"
+                            },
+                            {
+                                "guid":  "com.kydldev.WaterAndTarPools",
+                                "section":  "Pools",
+                                "key":  "WaterFlow",
+                                "value":  "4"
+                            },
+                            {
+                                "guid":  "com.kydldev.WaterAndTarPools",
+                                "section":  "Visuals",
+                                "key":  "Enable",
+                                "value":  "true"
+                            },
+                            {
+                                "guid":  "com.kydldev.WaterAndTarPools",
+                                "section":  "Visuals",
+                                "key":  "WaterDepthLook",
+                                "value":  "0.15"
+                            }
+                        ],
+    "resetBetweenTests":  true,
+    "tests":  [
+                  "startup-clean",
+                  "hub-page",
+                  "feature-toggle"
+              ]
+}

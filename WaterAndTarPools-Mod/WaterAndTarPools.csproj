@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <!--
     WaterAndTarPools mod. Everything shared by the user's mods (references from Claude\ref, net48, no debug symbols, the shared code
-    Kydl.Common, the KydlCore reference, copy to Assets + build + the Gale test profile, embedded bundle) comes from
+    the KydlCore.dll reference, copy to assets + the Gale test profile, embedded bundle) comes from
     Claude\shared\Kydl.Mod.props / .targets. Only what is special about this mod is below.
     Build: dotnet build "WaterAndTarPools-Mod\WaterAndTarPools.csproj" -c Release
   -->
@@ -11,18 +11,25 @@
     <AssemblyName>WaterAndTarPools</AssemblyName>
     <RootNamespace>WaterAndTarPools</RootNamespace>
     <PackageId>WaterAndTarPools</PackageId>
-    <!-- the water bundle (pool water shader + style materials), built in WaterAndTarPools-Unity (menu WTP / Build AssetBundle); embedded when Assets\waterandtarpools exists -->
+    <!-- the water bundle (pool water shader + style materials), built in WaterAndTarPools-Unity (menu WTP / Build AssetBundle); embedded when assets\waterandtarpools exists -->
     <BundleName>waterandtarpools</BundleName>
-    <!-- 2.0.0: the UI kit, the input lock, the KY hub and the KY-Items registry come from KydlCore.dll (a hard dependency), not from a copy in this DLL -->
-    <KydlUseCore>true</KydlUseCore>
+    <!-- spec layout (MIGRATION_DECISIONS A8): the DLL goes to assets\ only, no build\ folder -->
+    <KydlBuildFolder>false</KydlBuildFolder>
     <!-- CS0436: a referenced mod of the user (InternalsVisibleTo) also compiles the shared internal Kydl.Common types; this assembly's own copy wins, which is intended -->
     <NoWarn>$(NoWarn);CS0436</NoWarn>
     <!-- DrainTarPit's build output (this mod needs it: hard dependency) -->
-    <DrainTarPitDir Condition="'$(DrainTarPitDir)' == ''">$(MSBuildThisFileDirectory)..\..\DrainTarPit\DrainTarPit-Mod\build</DrainTarPitDir>
+    <DrainTarPitDir Condition="'$(DrainTarPitDir)' == ''">$(MSBuildThisFileDirectory)..\..\DrainTarPit\DrainTarPit-Mod\assets</DrainTarPitDir>
   </PropertyGroup>
 
   <ItemGroup>
     <Reference Include="DrainTarPit"><HintPath>$(DrainTarPitDir)\DrainTarPit.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- tests\ (NUnit + TestLab suites) and release\ live inside this folder but are never part of the mod (spec 3); docs\ stays out of the compile, WaterLook.txt is embedded below -->
+    <Compile Remove="tests\**;docs\**;release\**" />
+    <None Remove="tests\**;docs\**;release\**" />
+    <EmbeddedResource Remove="tests\**;release\**" />
   </ItemGroup>
 
   <ItemGroup>

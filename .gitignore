@@ -14,8 +14,8 @@ secrets/
 /_backup*/
 
 # --- build output copied into the mod's Assets folder (asset bundles stay tracked) ---
-/*-Mod/Assets/*.dll
-/*-Mod/Assets/*.pdb
+/*-Mod/assets/*.dll
+/*-Mod/assets/*.pdb
 
 # --- .NET / Visual Studio / Rider ---
 bin/
@@ -67,12 +67,12 @@ Thumbs.db
 Desktop.ini
 
 # --- detected at adoption (compiled references / build copies) ---
-/DrainTarPit-Unity/ref/
-/DrainTarPit-Mod/ref/
-/DrainTarPit-Mod/build/
-/*-Tests/.nuget/
-/*-Tests/.tmp/
-/*-Tests/.dotnet/
+/WaterAndTarPools-Unity/ref/
+/WaterAndTarPools-Mod/ref/
+/WaterAndTarPools-Mod/build/
+/*-Mod/tests/.nuget/
+/*-Mod/tests/.tmp/
+/*-Mod/tests/.dotnet/
 
 # --- Unity ---
 /*-Unity/Library/
@@ -104,4 +104,11 @@ CLAUDE.md
 *.zip
 
 # --- test-quality output (coverage + Stryker reports), rebuilt by _agent/tools/test-quality.ps1 ---
-/*-Tests/_quality/
+/*-Mod/tests/_quality/
+
+# SonarQube scanner work folder
+.sonarqube/
+/*-Mod/tests/TestResults/
+
+# SonarQube scanner work files (H30/H31)
+**/tests/_quality/sonar-coverage/
