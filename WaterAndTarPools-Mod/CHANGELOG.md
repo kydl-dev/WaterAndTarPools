@@ -2,6 +2,7 @@
 
 ## 2.0.0
 
+- Tested in game with the full TestLab suite (3 tests): 3 green runs in a row on 2026-11-05, plus the ecosystem run with all 12 KydlDev mods loaded together.
 - Ported to the KydlDev layout (feature folder, Bootstrap/Configuration/Integrations folders, all Harmony patches in one place, KydlCore feature registry, a **Settings** tab in the KY hub with every config entry). Checked in game on 2026-11-04 (clean start and quit with all mods loaded, no errors from this mod); the automated tests pass.
 - Network compatibility is now checked down to the patch version (was minor). Needs DrainTarPit 2.0.0.
 - Breaking: needs the KydlCore mod (hard dependency; the mod manager installs it).
